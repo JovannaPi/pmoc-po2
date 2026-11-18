@@ -6,7 +6,9 @@ Autora: Jovanna Pinheiro Ferreira.
 Equipes de manutenção são tratadas como máquinas paralelas idênticas, com
 tempo de setup dependente da sequência (deslocamento entre prédios), jornada
 diária e limite de vagas por prédio por dia. Objetivo: minimizar o makespan
-(Cmax). Métodos: regra atual do sistema, LPT+NEH, IG, VNS e ILS.
+(Cmax). Métodos: regra atual do sistema, LPT+NEH, IG, VNS, ILS e algoritmo genético
+(AG). Um modelo MILP (Python-MIP + CBC) valida as meta-heurísticas em
+instâncias pequenas (`codigo/modelo_exato.py`).
 
 ## Como rodar (Windows)
 
@@ -35,6 +37,7 @@ python rodar_tudo.py
 cd ..
 git add -A
 git commit -m "resultados do experimento"
+git pull --no-edit
 git push
 ```
 
@@ -83,6 +86,7 @@ id predio tipo btu p           (uma linha por aparelho; p em minutos)
 | Arquivo | Descrição |
 |---|---|
 | `pmoc.py` | Instância, decodificador (list scheduling), avaliação acelerada, regra atual, LPT+NEH |
-| `metaheuristicas.py` | IG, VNS e ILS |
+| `metaheuristicas.py` | IG, VNS, ILS e AG |
+| `modelo_exato.py` | Modelo MILP e validação em instâncias pequenas (opcional; já rodado) |
 | `config.py` | Tempo por execução e nº de processos |
 | `estilo.py`, `gantt.py` | Estilo dos gráficos e reconstrução da programação detalhada |

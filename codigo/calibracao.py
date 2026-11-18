@@ -4,6 +4,7 @@ Calibração dos parâmetros (metodologia da aula de Calibração):
   2. testa todas as combinações de parâmetros de cada meta-heurística;
   3. executa 5 vezes cada combinação em cada instância;
   4. desvio = (média - melhor da instância) / melhor da instância * 100;
+     (a melhor da instância é a melhor solução daquele algoritmo na calibração)
   5. escolhe a combinação com menor desvio médio.
 """
 import glob
@@ -17,7 +18,7 @@ import pandas as pd
 
 sys.path.insert(0, os.path.dirname(__file__))
 from pmoc import Instancia, decodificar
-from metaheuristicas import ig, vns, ils
+from metaheuristicas import ig, vns, ils, ag
 
 BASE = os.path.join(os.path.dirname(os.path.abspath(__file__)), "..")
 from config import TEMPO_POR_APARELHO, PROCESSOS
@@ -27,8 +28,9 @@ GRADES = {
     "IG": {"d": [2, 4, 6], "tau": [0.1, 0.4, 0.8]},
     "VNS": {"kmax": [3, 5], "fator_L": [0.5, 1.0, 2.0]},
     "ILS": {"intensidade": [0.01, 0.025, 0.05], "fator_L": [0.5, 1.0, 2.0]},
+    "AG": {"tam_pop": [20, 50, 100], "pm": [0.05, 0.2]},
 }
-FUNC = {"IG": ig, "VNS": vns, "ILS": ils}
+FUNC = {"IG": ig, "VNS": vns, "ILS": ils, "AG": ag}
 
 
 def instancias_calibracao():

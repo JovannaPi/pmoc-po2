@@ -36,6 +36,8 @@ def espaco(alg, trial):
         return {"d": trial.suggest_int("d", 2, 10), "tau": trial.suggest_float("tau", 0.05, 1.5)}
     if alg == "VNS":
         return {"kmax": trial.suggest_int("kmax", 2, 5), "fator_L": trial.suggest_float("fator_L", 0.25, 3.0)}
+    if alg == "AG":
+        return {"tam_pop": trial.suggest_int("tam_pop", 10, 150), "pm": trial.suggest_float("pm", 0.01, 0.5)}
     return {"intensidade": trial.suggest_float("intensidade", 0.005, 0.10),
             "fator_L": trial.suggest_float("fator_L", 0.25, 3.0)}
 
@@ -45,8 +47,22 @@ def main():
     grade = pd.read_csv(os.path.join(BASE, "resultados", "calibracao_execucoes.csv"))
     melhor = grade.groupby("instancia").cmax.min().to_dict()
     pool = Pool(PROCESSOS)
+    # Retomada por algoritmo: os já concluídos são mantidos
+    R_ = os.path.join(BASE, "resultados")
     registros, melhores, execucoes = [], {}, []
-    for alg in ["IG", "VNS", "ILS"]:
+    if os.path.exists(os.path.join(R_, "optuna_melhores.json")):
+        with open(os.path.join(R_, "optuna_melhores.json")) as f:
+            melhores = json.load(f)
+        registros = pd.read_csv(os.path.join(R_, "optuna_tentativas.csv")).to_dict("records")
+        execucoes = pd.read_csv(os.path.join(R_, "optuna_execucoes.csv")).to_dict("records")
+        registros = [r for r in registros if r["algoritmo"] in melhores]
+        execucoes = [r for r in execucoes if r["algoritmo"] in melhores]
+        for r in execucoes:
+            melhor[r["instancia"]] = min(melhor[r["instancia"]], r["cmax"])
+    for alg in ["IG", "VNS", "ILS", "AG"]:
+        if alg in melhores:
+            print(alg, "já calibrado com Optuna", flush=True)
+            continue
         def objetivo(trial):
             params = espaco(alg, trial)
             tarefas = [(c, alg, params, r) for c in calib for r in range(REPS)]
@@ -66,6 +82,11 @@ def main():
                                      sampler=optuna.samplers.TPESampler(seed=7))
         estudo.optimize(objetivo, n_trials=TENTATIVAS)
         melhores[alg] = {"params": estudo.best_params, "desvio": estudo.best_value}
+        # salva ao fim de cada algoritmo (permite retomar)
+        pd.DataFrame(execucoes).to_csv(os.path.join(R_, "optuna_execucoes.csv"), index=False)
+        pd.DataFrame(registros).to_csv(os.path.join(R_, "optuna_tentativas.csv"), index=False)
+        with open(os.path.join(R_, "optuna_melhores.json"), "w") as f:
+            json.dump(melhores, f, indent=2)
     pool.close()
     pd.DataFrame(execucoes).to_csv(os.path.join(BASE, "resultados", "optuna_execucoes.csv"), index=False)
     pd.DataFrame(registros).to_csv(os.path.join(BASE, "resultados", "optuna_tentativas.csv"), index=False)

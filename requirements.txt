@@ -6,3 +6,4 @@ numba
 statsmodels
 scikit-posthocs
 optuna
+mip

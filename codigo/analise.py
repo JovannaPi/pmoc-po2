@@ -23,7 +23,7 @@ from estilo import aplicar_estilo, COR, CINZA
 BASE = os.path.join(os.path.dirname(os.path.abspath(__file__)), "..")
 R = os.path.join(BASE, "resultados")
 F = os.path.join(BASE, "figuras")
-ALGS = ["IG", "VNS", "ILS"]
+ALGS = ["IG", "VNS", "ILS", "AG"]
 H = 420
 
 
@@ -127,14 +127,14 @@ def main():
     for caixa, alg in zip(bp["boxes"], ALGS):
         caixa.set_facecolor(COR[alg])
         caixa.set_edgecolor("#55554f")
-    ax.set_xticks([1, 2, 3])
+    ax.set_xticks(range(1, len(ALGS) + 1))
     ax.set_xticklabels(ALGS)
     ax.set_ylabel("RPD (%)")
     fig.savefig(os.path.join(F, "boxplot_rpd.pdf"))
     fig.savefig(os.path.join(F, "boxplot_rpd.png"), dpi=200)
 
     # Q-Q plots
-    fig, eixos = plt.subplots(1, 3, figsize=(7, 2.4))
+    fig, eixos = plt.subplots(1, 4, figsize=(9, 2.4))
     for ax, alg, g in zip(eixos, ALGS, grupos):
         (osm, osr), (sl, ic, _) = stats.probplot(g)
         ax.plot(osm, osr, "o", markersize=2.5, color=COR[alg], alpha=0.7)

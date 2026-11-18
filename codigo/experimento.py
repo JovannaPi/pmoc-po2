@@ -1,5 +1,5 @@
 """
-Experimento final: IG, VNS e ILS calibrados, 30 execuções independentes em
+Experimento final: IG, VNS, ILS e AG calibrados, 30 execuções independentes em
 cada instância de teste (todas as que não foram usadas na calibração),
 mais as heurísticas determinísticas (regra atual do sistema e LPT+NEH).
 """
@@ -64,7 +64,7 @@ def main():
     pd.DataFrame(det).to_csv(os.path.join(BASE, "resultados", "deterministicos.csv"), index=False)
 
     tarefas = [(c, alg, PARAMS[alg], r, os.path.basename(c)[:-4] in INST_CONVERGENCIA)
-               for c in teste for alg in ["IG", "VNS", "ILS"] for r in range(EXECUCOES)]
+               for c in teste for alg in ["IG", "VNS", "ILS", "AG"] for r in range(EXECUCOES)]
     # Retomada: execuções já salvas não são repetidas
     arq = os.path.join(BASE, "resultados", "experimento_execucoes.csv")
     arq_c = os.path.join(BASE, "resultados", "convergencia.csv")

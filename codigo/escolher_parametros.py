@@ -27,11 +27,13 @@ def rotulo(alg, p):
         return f"{p['d']}\n{_v(p['tau'])}"
     if alg == "VNS":
         return f"{p['kmax']}\n{_v(p['fator_L'])}n"
+    if alg == "AG":
+        return f"{p['tam_pop']}\n{_v(p['pm'])}"
     pct = _v("%g" % (p["intensidade"] * 100))
     return f"{pct}%\n{_v(p['fator_L'])}n"
 
 
-EIXO_X = {"IG": "d  /  τ", "VNS": "kmax  /  L", "ILS": "intensidade  /  L"}
+EIXO_X = {"IG": "d  /  τ", "VNS": "kmax  /  L", "ILS": "intensidade  /  L", "AG": "população  /  pm"}
 
 
 def main():
@@ -46,8 +48,8 @@ def main():
         return m
 
     finais, tabela = {}, []
-    fig, eixos = plt.subplots(1, 3, figsize=(7.5, 2.9), sharey=False, gridspec_kw={"width_ratios": [9, 6, 9]})
-    for ax, alg in zip(eixos, ["IG", "VNS", "ILS"]):
+    fig, eixos = plt.subplots(1, 4, figsize=(9, 2.9), sharey=False, gridspec_kw={"width_ratios": [9, 6, 9, 6]})
+    for ax, alg in zip(eixos, ["IG", "VNS", "ILS", "AG"]):
         dg = desvios(g[g.algoritmo == alg], "parametros")
         rg = dg.groupby("parametros").desvio.mean().sort_values()
         do = desvios(o[o.algoritmo == alg], "parametros")
@@ -62,6 +64,8 @@ def main():
             escolha["d"] = int(escolha["d"])
         if alg == "VNS":
             escolha["kmax"] = int(escolha["kmax"])
+        if alg == "AG":
+            escolha["tam_pop"] = int(escolha["tam_pop"])
         finais[alg] = {k: (round(v, 3) if isinstance(v, float) else v) for k, v in escolha.items()}
         tabela.append(dict(algoritmo=alg, grade=json.dumps(melhor_g), desvio_grade=rg.iloc[0],
                            optuna=json.dumps({k: round(v, 3) for k, v in melhor_o.items()}),
@@ -87,7 +91,15 @@ def main():
     fig.savefig(os.path.join(BASE, "figuras", "calibracao_boxplot.png"), dpi=200)
 
     pd.DataFrame(tabela).to_csv(os.path.join(R, "calibracao_comparacao.csv"), index=False)
-    with open(os.path.join(R, "parametros_finais.json"), "w") as f:
+    # Se o experimento já começou com parâmetros escolhidos antes, eles são
+    # mantidos (só algoritmos novos recebem parâmetros), para não misturar
+    # execuções com configurações diferentes.
+    arq = os.path.join(R, "parametros_finais.json")
+    if os.path.exists(arq):
+        with open(arq) as f:
+            anteriores = json.load(f)
+        finais.update(anteriores)
+    with open(arq, "w") as f:
         json.dump(finais, f, indent=2)
     print(pd.DataFrame(tabela).to_string())
     print(json.dumps(finais, indent=2))

@@ -1,7 +1,7 @@
 import matplotlib.pyplot as plt
 
 # Paleta categórica validada (slots 1-3) e cinzas para referências
-COR = {"IG": "#2a78d6", "VNS": "#eb6834", "ILS": "#1baf7a"}
+COR = {"IG": "#2a78d6", "VNS": "#eb6834", "ILS": "#1baf7a", "AG": "#eda100"}
 CINZA = "#8a8a83"
 
 
