@@ -1,0 +1,33 @@
+PEQ-n5-m1-2 OPTIMAL 391.0 {'IG_melhor': 391, 'VNS_melhor': 391, 'ILS_melhor': 391, 'AG_melhor': 391}
+PEQ-n5-m1-1 OPTIMAL 370.0 {'IG_melhor': 370, 'VNS_melhor': 370, 'ILS_melhor': 370, 'AG_melhor': 370}
+PEQ-n5-m2-1 OPTIMAL 173.0 {'IG_melhor': 173, 'VNS_melhor': 173, 'ILS_melhor': 173, 'AG_melhor': 173}
+PEQ-n5-m2-2 OPTIMAL 182.0 {'IG_melhor': 182, 'VNS_melhor': 182, 'ILS_melhor': 182, 'AG_melhor': 182}
+PEQ-n6-m1-1 OPTIMAL 491.0 {'IG_melhor': 491, 'VNS_melhor': 491, 'ILS_melhor': 491, 'AG_melhor': 491}
+PEQ-n6-m1-2 OPTIMAL 408.0 {'IG_melhor': 408, 'VNS_melhor': 408, 'ILS_melhor': 408, 'AG_melhor': 408}
+PEQ-n6-m2-1 OPTIMAL 225.0 {'IG_melhor': 225, 'VNS_melhor': 225, 'ILS_melhor': 225, 'AG_melhor': 225}
+PEQ-n6-m2-2 OPTIMAL 187.0 {'IG_melhor': 187, 'VNS_melhor': 187, 'ILS_melhor': 187, 'AG_melhor': 187}
+PEQ-n7-m1-2 OPTIMAL 484.0 {'IG_melhor': 484, 'VNS_melhor': 484, 'ILS_melhor': 484, 'AG_melhor': 484}
+PEQ-n7-m1-1 OPTIMAL 492.0 {'IG_melhor': 523, 'VNS_melhor': 492, 'ILS_melhor': 492, 'AG_melhor': 492}
+PEQ-n7-m2-1 OPTIMAL 272.0 {'IG_melhor': 272, 'VNS_melhor': 272, 'ILS_melhor': 272, 'AG_melhor': 272}
+PEQ-n7-m2-2 OPTIMAL 253.0 {'IG_melhor': 253, 'VNS_melhor': 253, 'ILS_melhor': 253, 'AG_melhor': 253}
+PEQ-n8-m1-2 OPTIMAL 552.0 {'IG_melhor': 552, 'VNS_melhor': 552, 'ILS_melhor': 552, 'AG_melhor': 552}
+PEQ-n8-m1-1 OPTIMAL 587.0 {'IG_melhor': 587, 'VNS_melhor': 587, 'ILS_melhor': 587, 'AG_melhor': 587}
+PEQ-n8-m2-1 OPTIMAL 264.0 {'IG_melhor': 264, 'VNS_melhor': 264, 'ILS_melhor': 264, 'AG_melhor': 264}
+PEQ-n8-m2-2 OPTIMAL 295.0 {'IG_melhor': 295, 'VNS_melhor': 295, 'ILS_melhor': 295, 'AG_melhor': 295}
+      instancia  n  m  dias_ub  cmax_regra_atual   status  cmax_milp     lb_milp  tempo_milp  cmax_neh  IG_melhor  IG_media  IG_acertos  VNS_melhor  VNS_media  VNS_acertos  ILS_melhor  ILS_media  ILS_acertos  AG_melhor  AG_media  AG_acertos
+0   PEQ-n5-m1-1  5  1        1               370  OPTIMAL      370.0  370.000000    0.154529       370        370     370.0          10         370      370.0           10         370      370.0           10        370     370.0          10
+1   PEQ-n5-m1-2  5  1        1               391  OPTIMAL      391.0  391.000000    0.119420       391        391     391.0          10         391      391.0           10         391      391.0           10        391     391.0          10
+2   PEQ-n5-m2-1  5  2        1               192  OPTIMAL      173.0  172.990724    0.061753       175        173     173.0          10         173      173.0           10         173      173.0           10        173     173.0          10
+3   PEQ-n5-m2-2  5  2        1               204  OPTIMAL      182.0  182.000000    0.071550       201        182     182.0          10         182      182.0           10         182      182.0           10        182     182.0          10
+4   PEQ-n6-m1-1  6  1        2               496  OPTIMAL      491.0  491.000000    0.117857       496        491     491.0          10         491      491.0           10         491      491.0           10        491     491.0          10
+5   PEQ-n6-m1-2  6  1        1               408  OPTIMAL      408.0  408.000000    0.537560       408        408     408.0          10         408      408.0           10         408      408.0           10        408     408.0          10
+6   PEQ-n6-m2-1  6  2        1               231  OPTIMAL      225.0  225.000000    0.621549       225        225     225.0          10         225      225.0           10         225      225.0           10        225     225.0          10
+7   PEQ-n6-m2-2  6  2        1               194  OPTIMAL      187.0  187.000000    0.360654       190        187     187.0          10         187      187.0           10         187      187.0           10        187     187.0          10
+8   PEQ-n7-m1-1  7  1        2               492  OPTIMAL      492.0  492.000000    2.377082       523        523     523.0           0         492      492.0           10         492      492.0           10        492     492.0          10
+9   PEQ-n7-m1-2  7  1        2               484  OPTIMAL      484.0  484.000000    1.371466       538        484     484.0          10         484      484.0           10         484      484.0           10        484     484.0          10
+10  PEQ-n7-m2-1  7  2        1               280  OPTIMAL      272.0  272.000000    0.802757       280        272     272.0          10         272      272.0           10         272      272.0           10        272     272.0          10
+11  PEQ-n7-m2-2  7  2        1               258  OPTIMAL      253.0  253.000000    0.423867       277        253     253.0          10         253      253.0           10         253      253.0           10        253     253.0          10
+12  PEQ-n8-m1-1  8  1        2               655  OPTIMAL      587.0  587.000000   36.441918       597        587     593.0           4         587      587.0           10         587      588.0            9        587     587.0          10
+13  PEQ-n8-m1-2  8  1        2               573  OPTIMAL      552.0  552.000000    1.862375       607        552     552.0          10         552      552.0           10         552      552.0           10        552     552.0          10
+14  PEQ-n8-m2-1  8  2        1               272  OPTIMAL      264.0  264.000000   52.852244       269        264     264.0          10         264      264.0           10         264      264.0           10        264     264.0          10
+15  PEQ-n8-m2-2  8  2        1               300  OPTIMAL      295.0  295.000000  117.894101       295        295     295.0          10         295      295.0           10         295      295.0           10        295     295.0          10
