@@ -1,0 +1,8 @@
+numpy
+pandas
+scipy
+matplotlib
+numba
+statsmodels
+scikit-posthocs
+optuna
