@@ -1,0 +1,20 @@
+<section id="modelo" class="areia">
+<p class="eyebrow">Modelagem</p>
+<h2>Equipes viram máquinas paralelas; o deslocamento vira tempo de setup</h2>
+<div class="linha" style="gap:64px;align-items:flex-start">
+<table style="width:1000px">
+<tr><th>No PMOC</th><th>Em scheduling</th></tr>
+<tr><td>Equipes de técnicos</td><td>Máquinas paralelas idênticas</td></tr>
+<tr><td>Aparelhos</td><td>Tarefas com tempo p<sub>j</sub></td></tr>
+<tr><td>Deslocamento entre prédios</td><td>Setup dependente da sequência</td></tr>
+<tr><td>Jornada de 420 min</td><td>Capacidade diária</td></tr>
+<tr><td>Vagas por prédio</td><td>Limite diário por prédio</td></tr>
+<tr><td class="destaque">Dias do ciclo</td><td class="destaque">Makespan (C<sub>max</sub>), a minimizar</td></tr>
+</table>
+<div class="col" style="width:600px">
+<p class="aviso">Generaliza o P<sub>m</sub>|s<sub>ij</sub>|C<sub>max</sub>, que é <b>NP-difícil</b>.</p>
+<p class="nota">Formulado como <b>programação inteira mista</b>: atribuição (x), sequência (y, z), início de cada atendimento (S) e C<sub>max</sub>, com jornada, deslocamento, vagas e quebra de simetria.</p>
+</div>
+</div>
+<aside>As equipes viram máquinas paralelas, os aparelhos viram tarefas e o deslocamento entre prédios vira um tempo de setup que depende da sequência. Somando a jornada e as vagas por prédio, o objetivo é minimizar o makespan, ou seja, fechar o ciclo o quanto antes. Formulei isso como um modelo de programação inteira mista. O problema generaliza o Pm|sij|Cmax, que é NP-difícil. (cerca de 35 s)</aside>
+</section>

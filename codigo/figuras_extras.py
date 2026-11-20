@@ -116,5 +116,10 @@ if __name__ == "__main__":
     aplicar_estilo()
     os.makedirs(F, exist_ok=True)
     esquema()
-    exemplo_decodificador()
-    tempo_milp()
+    # As duas figuras abaixo dependem da validação exata (modelo_exato.py),
+    # rodada à parte; são puladas se ela ainda não existir.
+    if os.path.exists(os.path.join(BASE, "resultados", "validacao_exata.csv")):
+        exemplo_decodificador()
+        tempo_milp()
+    else:
+        print("validacao_exata.csv não encontrado: figuras do MILP puladas")

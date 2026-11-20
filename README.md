@@ -73,14 +73,18 @@ git push
 | 8. Estudo de caso | `curva_conclusao.py` | `figuras/curva_conclusao_alece.*`, `figuras/gantt_alece_dias1e2.*` |
 | 9. Sensibilidade | `sensibilidade_equipes.py` | dias do ciclo com 5 a 9 equipes (`figuras/sensibilidade_equipes.*`) |
 | 10. Figuras de apoio | `figuras_extras.py` | esquema do problema, exemplo do decodificador, tempo do MILP |
-| (já rodado) Validação exata | `modelo_exato.py` | `resultados/validacao_exata.csv` (MILP × meta-heurísticas, 16 instâncias pequenas) |
+| (à parte) Validação exata | `modelo_exato.py` | `resultados/validacao_exata.csv` (MILP × meta-heurísticas, 16 instâncias pequenas); rodada depois do experimento, com os parâmetros calibrados |
 
 ## Instâncias
 
 25 instâncias sintéticas: `ALECE-base` (1050 aparelhos, 7 equipes) e
 `PMOC-n{1000,1250,1500,2000}-m{5,7}-{1,2,3}`. A estrutura vem do caso real
 (4 prédios, equipes de 2 técnicos das 9h às 17h, tipos hi-wall, piso-teto e
-cassete). Os valores são estimados, porque os dados do sistema são internos.
+cassete). Os tempos de preventiva vêm de um estudo de tempos feito em campo pela autora
+(hi-wall pequeno 2h, hi-wall grande 2h30, piso-teto 3h, cassete 3h30, ±10 min de
+variação de acesso). A composição do parque e os deslocamentos são estimados,
+porque o cadastro do sistema é interno. Resultados da versão anterior, com
+tempos estimados, estão em `arquivo/v1-tempos-estimados/`.
 
 Formato:
 

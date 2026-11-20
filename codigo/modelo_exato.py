@@ -144,7 +144,7 @@ def main():
         PARAMS.setdefault(a, padrao)
     os.makedirs(PASTA, exist_ok=True)
     semente = 500
-    for n in [5, 6, 7, 8]:
+    for n in [6, 8, 10, 12]:
         for m in [1, 2]:
             for r in (1, 2):
                 gerar(n, m, semente, f"PEQ-n{n}-m{m}-{r}", PASTA)

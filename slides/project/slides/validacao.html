@@ -1,0 +1,13 @@
+<section id="validacao">
+<p class="eyebrow">Validação exata</p>
+<h2>O modelo exato confirma: as meta-heurísticas acham o ótimo</h2>
+<div class="linha" style="gap:56px;align-items:flex-start">
+<img class="fig" src="/_blob/b825ebf45740fbb1a7c8a8f57500aae9" alt="Tempo do solver CBC até o ótimo, em escala logarítmica, crescendo de 0,15 s com 5 aparelhos para cerca de 53 s com 8" style="width:900px;height:560px">
+<div class="num-col" style="width:708px">
+<div><p class="grande">16 de 16</p><p class="grande-rot">instâncias pequenas resolvidas à otimalidade pelo CBC</p></div>
+<div><p class="grande">639 de 640</p><p class="grande-rot">execuções das meta-heurísticas atingiram o ótimo</p></div>
+<div><p class="grande">0,15 s → 53 s</p><p class="grande-rot">tempo médio do CBC de 5 para 8 aparelhos</p></div>
+</div>
+</div>
+<aside>Antes da escala real, validei o método com o modelo exato. O CBC resolveu à otimalidade 16 instâncias de 5 a 8 aparelhos, e as meta-heurísticas acharam esse ótimo em 639 de 640 execuções. Isso mostra que o decodificador não perde as soluções ótimas. E o gráfico mostra por que precisamos de meta-heurísticas: o tempo do solver multiplica por 350 com apenas 3 aparelhos a mais. Com mil aparelhos, é inviável. (cerca de 35 s)</aside>
+</section>

@@ -2,9 +2,10 @@
 Gerador de instâncias sintéticas para o problema de programação da
 manutenção preventiva (PMOC) de aparelhos de ar-condicionado.
 
-As instâncias são inspiradas na estrutura real da ALECE (4 prédios,
-equipes de 2 técnicos, jornada de 9h às 17h com 1h de almoço), mas os
-valores numéricos são estimados (dados reais são internos).
+As instâncias seguem a estrutura real da ALECE (4 prédios, equipes de 2
+técnicos, jornada de 9h às 17h com 1h de almoço). Os tempos de preventiva vêm
+de um estudo de tempos feito em campo; a composição do parque e os
+deslocamentos são estimados (o cadastro do sistema é interno).
 
 Formato do arquivo:
     n m H
@@ -36,15 +37,20 @@ BTUS = {
     "PISOTETO": [24000, 36000, 48000, 60000],
     "CASSETE": [24000, 36000, 48000, 60000],
 }
-TEMPO_BASE = {"HIWALL": 40, "PISOTETO": 60, "CASSETE": 75}  # min (equipe de 2)
+# Tempos médios de preventiva (min, equipe de 2 técnicos), obtidos em estudo de
+# tempos feito pela autora acompanhando a equipe de manutenção da ALECE:
+#   split hi-wall pequeno (9-12 mil BTU) 2h; grande (18-24 mil BTU) 2h30;
+#   piso-teto 3h; cassete 3h30.
+TEMPO_MEDIO = {"HIWALL": [120, 120, 150, 150], "PISOTETO": [180] * 4, "CASSETE": [210] * 4}
+VARIACAO_ACESSO = 10  # +-10 min conforme a dificuldade de acesso ao aparelho
 
 H = 420  # 9h-17h menos 1h de almoço
 FOLGA_VAGAS = 1.3  # vagas/dia = 30% acima da distribuição uniforme
 
 
 def tempo_preventiva(tipo, idx_btu, rng):
-    """Tempo base do tipo + acréscimo por porte + dificuldade de acesso."""
-    return TEMPO_BASE[tipo] + 5 * idx_btu + int(rng.integers(0, 11))
+    """Tempo médio do estudo de tempos (por tipo e porte) +- variação de acesso."""
+    return TEMPO_MEDIO[tipo][idx_btu] + int(rng.integers(-VARIACAO_ACESSO, VARIACAO_ACESSO + 1))
 
 
 def gerar(n, m, semente, nome, pasta):
