@@ -48,7 +48,7 @@ def main():
         return m
 
     finais, tabela = {}, []
-    fig, eixos = plt.subplots(1, 4, figsize=(9, 2.9), sharey=False, gridspec_kw={"width_ratios": [9, 6, 9, 6]})
+    fig, eixos = plt.subplots(1, 4, figsize=(8, 3.0), sharey=False, gridspec_kw={"width_ratios": [9, 6, 9, 6]})
     for ax, alg in zip(eixos, ["IG", "VNS", "ILS", "AG"]):
         dg = desvios(g[g.algoritmo == alg], "parametros")
         rg = dg.groupby("parametros").desvio.mean().sort_values()

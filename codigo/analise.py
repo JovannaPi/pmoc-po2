@@ -126,7 +126,7 @@ def main():
                + f"\nDias a mais da regra atual em relação ao plano (média): {ganhos.atraso_plano.mean():.2f}")
 
     texto = "\n\n".join(out)
-    with open(os.path.join(R, "analise_estatistica.txt"), "w") as f:
+    with open(os.path.join(R, "analise_estatistica.txt"), "w", encoding="utf-8") as f:
         f.write(texto)
     print(texto)
 
@@ -186,7 +186,7 @@ def main():
         c = conv[(conv.instancia == "ALECE-base") & conv.iteracao.notna()]
         nome_it = {"IG": "Iteração (destruição + construção)", "VNS": "Iteração (shaking + VND)",
                    "ILS": "Iteração (perturbação + busca local)", "AG": "Geração"}
-        fig, eixos = plt.subplots(1, 4, figsize=(9, 2.4), sharey=True)
+        fig, eixos = plt.subplots(1, 4, figsize=(7, 2.5), sharey=True)
         for ax, alg in zip(eixos, ALGS):
             reps = list(c[c.algoritmo == alg].groupby("rep"))
             if not reps:

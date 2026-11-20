@@ -6,9 +6,14 @@ CINZA = "#8a8a83"
 
 
 def aplicar_estilo():
+    # Times New Roman (Windows) ou TeX Gyre Termes (clone livre do Times, Linux)
+    import glob
+    from matplotlib import font_manager
+    for arq in glob.glob("/usr/share/texmf/fonts/opentype/public/tex-gyre/texgyretermes-*.otf"):
+        font_manager.fontManager.addfont(arq)
     plt.rcParams.update({
         "font.family": "serif",
-        "font.serif": ["Times New Roman", "Nimbus Roman", "DejaVu Serif"],
+        "font.serif": ["Times New Roman", "TeX Gyre Termes", "Nimbus Roman", "DejaVu Serif"],
         "font.size": 9,
         "axes.spines.top": False,
         "axes.spines.right": False,

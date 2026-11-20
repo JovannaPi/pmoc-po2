@@ -1,11 +1,11 @@
-== RPD mÈdio (%) e taxa de sucesso (%) por porte
+== RPD m√©dio (%) e taxa de sucesso (%) por porte
        RPD Regra atual  RPD LPT+NEH  RPD IG  RPD VNS  RPD ILS  RPD AG   TS IG  TS VNS  TS ILS   TS AG  TSdias IG  TSdias VNS  TSdias ILS  TSdias AG
 1000              6.20         1.99    0.90     0.68     0.59    0.81   61.11   81.11   92.22   60.00       7.78       23.33       38.89      23.33
 1050              6.22         1.56    0.86     0.35     0.36    0.39   70.00  100.00  100.00  100.00      73.33      100.00      100.00     100.00
 1250              6.08         0.36    0.21     0.21     0.16    0.29  100.00  100.00  100.00  100.00      76.67       76.67       83.33      75.00
 1500              5.95         0.40    0.26     0.11     0.13    0.14  100.00  100.00  100.00  100.00      80.00       98.89       97.78     100.00
 2000              6.25         0.13    0.10     0.10     0.09    0.12  100.00  100.00  100.00  100.00     100.00      100.00      100.00     100.00
-MÈdia             6.10         0.66    0.35     0.24     0.22    0.30   91.85   96.85   98.70   93.33      71.30       81.67       85.37      81.67
+M√©dia             6.10         0.66    0.35     0.24     0.22    0.30   91.85   96.85   98.70   93.33      71.30       81.67       85.37      81.67
 
 == Shapiro-Wilk
 IG: W=0.7476 p=7.11e-28
@@ -22,10 +22,10 @@ VNS  0.000217  1.000000  1.000000  0.000211
 ILS  0.000006  1.000000  1.000000  0.000006
 AG   1.000000  0.000211  0.000006  1.000000
 
-== Friedman (blocos = 18 inst‚ncias) Q=17.541 p=5.47e-04
-Posto mÈdio: IG=2.42, VNS=2.14, ILS=1.92, AG=3.53
+== Friedman (blocos = 18 inst√¢ncias) Q=17.541 p=5.47e-04
+Posto m√©dio: IG=2.42, VNS=2.14, ILS=1.92, AG=3.53
 
-== Nemenyi (pÛs-teste de Friedman)
+== Nemenyi (p√≥s-teste de Friedman)
            IG       VNS       ILS        AG
 IG   1.000000  0.917155  0.650954  0.048305
 VNS  0.917155  1.000000  0.955198  0.006847
@@ -45,16 +45,16 @@ AG         0.297   0.193  0.311
 0  Plano do sistema (modelo simplificado)  19.00       NaN           NaN          NaN      NaN           NaN
 1                             Regra atual  28.00  11473.00       9084.00          NaN      NaN           NaN
 2                                 LPT+NEH  27.00  10970.00       8401.00          NaN      NaN           NaN
-3                     IG (mÈdia 30 exec.)  26.27  10894.40       8555.27      10801.0     70.0         73.33
-4                    VNS (mÈdia 30 exec.)  26.00  10838.93       8411.77      10829.0    100.0        100.00
-5                    ILS (mÈdia 30 exec.)  26.00  10840.30       8430.70      10832.0    100.0        100.00
-6                     AG (mÈdia 30 exec.)  26.00  10842.90       8406.10      10820.0    100.0        100.00
+3                     IG (m√©dia 30 exec.)  26.27  10894.40       8555.27      10801.0     70.0         73.33
+4                    VNS (m√©dia 30 exec.)  26.00  10838.93       8411.77      10829.0    100.0        100.00
+5                    ILS (m√©dia 30 exec.)  26.00  10840.30       8430.70      10832.0    100.0        100.00
+6                     AG (m√©dia 30 exec.)  26.00  10842.90       8406.10      10820.0    100.0        100.00
 
-== ReduÁ„o mÈdia vs regra atual
+== Redu√ß√£o m√©dia vs regra atual
            red_cmax  red_dias
 algoritmo                    
 AG             5.47      2.48
 IG             5.41      2.38
 ILS            5.54      2.52
 VNS            5.52      2.48
-Dias a mais da regra atual em relaÁ„o ao plano (mÈdia): 14.56
+Dias a mais da regra atual em rela√ß√£o ao plano (m√©dia): 14.56
