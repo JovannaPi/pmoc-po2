@@ -1,0 +1,18 @@
+{
+  "IG": {
+    "d": 2,
+    "tau": 1.082
+  },
+  "VNS": {
+    "kmax": 2,
+    "fator_L": 2.395
+  },
+  "ILS": {
+    "intensidade": 0.01,
+    "fator_L": 0.5
+  },
+  "AG": {
+    "tam_pop": 100,
+    "pm": 0.05
+  }
+}
