@@ -18,15 +18,15 @@ from metaheuristicas import ig, vns, ils
 from estilo import aplicar_estilo
 
 BASE = os.path.join(os.path.dirname(os.path.abspath(__file__)), "..")
-PREDIO_COR = ["#2a78d6", "#eb6834", "#1baf7a", "#6250d6"]  # SEDE, A1, A2, A3
-PREDIO_NOME = ["SEDE", "Anexo I", "Anexo II", "Anexo III"]
+PREDIO_COR = ["#2a78d6", "#eb6834", "#1baf7a", "#6250d6", "#c0569b"]  # SEDE, A1..A4
+PREDIO_NOME = ["SEDE", "Anexo I", "Anexo II", "Anexo III", "Anexo IV"]
 
 
 def programa(inst, seq):
     """Mesma lógica do decodificador, devolvendo a programação detalhada."""
     m, H = inst.m, inst.H
     dia, t, loc = [0] * m, [0] * m, [0] * m
-    uso = np.zeros((inst.maxD, 4), int)
+    uso = np.zeros((inst.maxD, inst.B), int)
     tarefas = []
     for j in seq:
         b = inst.predio[j]
@@ -91,7 +91,7 @@ def main():
     desenhar(eixos[0], d_ra, inst.H, f"Regra atual — {c_ra[3]} dias (Cmax = {c_ra[0]} min úteis, deslocamento = {c_ra[2]} min)", ndias)
     desenhar(eixos[1], d_mh, inst.H, f"{a.algoritmo} — {c_mh[3]} dias (Cmax = {c_mh[0]} min úteis, deslocamento = {c_mh[2]} min)", ndias)
     handles = [plt.Rectangle((0, 0), 1, 1, color=c) for c in PREDIO_COR] + [plt.Rectangle((0, 0), 1, 1, color="#c3c2b7")]
-    fig.legend(handles, PREDIO_NOME + ["Deslocamento"], loc="lower center", ncol=5, fontsize=8, bbox_to_anchor=(0.5, -0.02))
+    fig.legend(handles, PREDIO_NOME + ["Deslocamento"], loc="lower center", ncol=6, fontsize=8, bbox_to_anchor=(0.5, -0.02))
     fig.tight_layout(rect=(0, 0.05, 1, 1))
     fig.savefig(os.path.join(BASE, "figuras", "gantt_alece.pdf"))
     fig.savefig(os.path.join(BASE, "figuras", "gantt_alece.png"), dpi=200)

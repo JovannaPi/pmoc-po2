@@ -2,35 +2,38 @@
 Gerador de instâncias sintéticas para o problema de programação da
 manutenção preventiva (PMOC) de aparelhos de ar-condicionado.
 
-As instâncias seguem a estrutura real da ALECE (4 prédios, equipes de 2
+As instâncias seguem a estrutura real da ALECE (SEDE + 4 anexos, equipes de 2
 técnicos, jornada de 9h às 17h com 1h de almoço). Os tempos de preventiva vêm
 de um estudo de tempos feito em campo; a composição do parque e os
 deslocamentos são estimados (o cadastro do sistema é interno).
 
 Formato do arquivo:
     n m H
-    cap_0 cap_1 cap_2 cap_3            (vagas por prédio por dia)
-    matriz 4x4 de deslocamento (min)   (diagonal = deslocamento interno)
+    cap_0 ... cap_{B-1}                (vagas por prédio por dia; B prédios)
+    matriz BxB de deslocamento (min)   (diagonal = deslocamento interno)
     n linhas: id predio tipo btu p     (p = tempo de preventiva, min)
 """
 import math
 import os
 import numpy as np
 
-PREDIOS = ["SEDE", "ANEXO1", "ANEXO2", "ANEXO3"]
+PREDIOS = ["SEDE", "ANEXO1", "ANEXO2", "ANEXO3", "ANEXO4"]
 TIPOS = ["HIWALL", "PISOTETO", "CASSETE"]
 
-# Deslocamento entre prédios (min): caminhada com ferramentas/escada.
-# Diagonal: deslocamento entre salas do mesmo prédio.
+# Deslocamento entre prédios (min), estimado a partir do mapa e da experiência
+# da equipe: caminhada com ferramentas e material, escadas e elevadores, e
+# travessia da Av. Pontes Vieira (Anexos III e IV ficam do outro lado).
+# Diagonal: troca de sala/andar no mesmo prédio (escadas e elevadores).
 DESLOC = np.array([
-    [5, 10, 15, 20],
-    [10, 5, 8, 15],
-    [15, 8, 5, 12],
-    [20, 15, 12, 5],
+    [8, 8, 10, 15, 20],
+    [8, 8, 10, 12, 18],
+    [10, 10, 8, 15, 18],
+    [15, 12, 15, 8, 15],
+    [20, 18, 18, 15, 8],
 ])
 
-# Proporção de aparelhos por prédio e por tipo
-PROP_PREDIO = [0.40, 0.25, 0.20, 0.15]
+# Proporção de aparelhos por prédio e por tipo (estimadas)
+PROP_PREDIO = [0.35, 0.15, 0.20, 0.15, 0.15]
 PROP_TIPO = [0.60, 0.25, 0.15]
 BTUS = {
     "HIWALL": [9000, 12000, 18000, 24000],
@@ -55,7 +58,7 @@ def tempo_preventiva(tipo, idx_btu, rng):
 
 def gerar(n, m, semente, nome, pasta):
     rng = np.random.default_rng(semente)
-    predio = rng.choice(4, size=n, p=PROP_PREDIO)
+    predio = rng.choice(len(PREDIOS), size=n, p=PROP_PREDIO)
     linhas, tempos = [], []
     for i in range(n):
         tipo = TIPOS[rng.choice(3, p=PROP_TIPO)]
@@ -66,10 +69,10 @@ def gerar(n, m, semente, nome, pasta):
 
     # Vagas por dia em cada prédio (parâmetro que já existe no sistema).
     # Calculadas a partir de um limite inferior de dias do ciclo.
-    carga = sum(tempos) + 5 * n
+    carga = sum(tempos) + int(DESLOC.diagonal().min()) * n
     dias_lb = max(1, math.ceil(carga / (m * H)))
-    n_b = np.bincount(predio, minlength=4)
-    cap = [max(2, math.ceil(FOLGA_VAGAS * n_b[b] / dias_lb)) for b in range(4)]
+    n_b = np.bincount(predio, minlength=len(PREDIOS))
+    cap = [max(2, math.ceil(FOLGA_VAGAS * n_b[b] / dias_lb)) for b in range(len(PREDIOS))]
 
     with open(os.path.join(pasta, nome + ".txt"), "w") as f:
         f.write(f"{n} {m} {H}\n")

@@ -71,7 +71,7 @@ def main():
         desenhar(ax, dd, inst.H, f"{rot} — dias 1 e 2: {len(dd)} aparelhos concluídos, "
                                  f"{int(dd.desloc.sum())} min de deslocamento", 2)
     handles = [plt.Rectangle((0, 0), 1, 1, color=c) for c in PREDIO_COR] + [plt.Rectangle((0, 0), 1, 1, color="#c3c2b7")]
-    fig.legend(handles, PREDIO_NOME + ["Deslocamento"], loc="lower center", ncol=5, fontsize=8, bbox_to_anchor=(0.5, -0.02))
+    fig.legend(handles, PREDIO_NOME + ["Deslocamento"], loc="lower center", ncol=6, fontsize=8, bbox_to_anchor=(0.5, -0.02))
     fig.tight_layout(rect=(0, 0.05, 1, 1))
     fig.savefig(os.path.join(BASE, "figuras", "gantt_alece_dias1e2.pdf"))
     fig.savefig(os.path.join(BASE, "figuras", "gantt_alece_dias1e2.png"), dpi=200)

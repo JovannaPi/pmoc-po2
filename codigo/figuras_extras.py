@@ -25,31 +25,39 @@ F = os.path.join(BASE, "figuras")
 
 def esquema():
     inst = Instancia(os.path.join(BASE, "instancias", "ALECE-base.txt"))
-    nb = np.bincount(inst.predio, minlength=4)
-    pos = {0: (0.0, 0.8), 1: (2.6, 0.8), 2: (2.6, -0.8), 3: (0.0, -0.8)}
-    fig, ax = plt.subplots(figsize=(5.6, 3.8))
-    for a in range(4):
-        for b in range(a + 1, 4):
-            (x1, y1), (x2, y2) = pos[a], pos[b]
-            ax.plot([x1, x2], [y1, y2], color="#c3c2b7", linewidth=1.5, zorder=1)
-            diagonal = (x1 != x2) and (y1 != y2)
-            f = 0.28 if diagonal else 0.5   # rótulos das diagonais fora do cruzamento
-            ax.text(x1 + f * (x2 - x1), y1 + f * (y2 - y1), f"{inst.T[a, b]} min", fontsize=8, ha="center",
-                    va="center", color="#3d4556", zorder=2,
-                    bbox=dict(boxstyle="round,pad=0.2", fc="#fcfcfb", ec="none"))
+    B = inst.B
+    nb = np.bincount(inst.predio, minlength=B)
+    # posições aproximadas, como no mapa (SEDE e Anexo I juntos; III e IV do
+    # outro lado da Av. Pontes Vieira)
+    pos = {0: (0.0, 1.05), 1: (0.15, 0.05), 2: (1.45, 0.55), 3: (1.1, -1.25), 4: (2.75, -0.85)}
+    fig, (ax, axt) = plt.subplots(1, 2, figsize=(8.2, 3.6), gridspec_kw={"width_ratios": [1.25, 1]})
+    ax.plot([-0.6, 3.9], [-0.6, -0.05], color="#9a9a92", linewidth=6, alpha=0.35, zorder=0)
+    ax.text(3.85, 0.08, "Av. Pontes Vieira", fontsize=7, color="#55554f", ha="right", style="italic")
     for b, (x, y) in pos.items():
-        ax.scatter([x], [y], s=2600, color=PREDIO_COR[b], zorder=3, edgecolor="white", linewidth=2)
-        ax.text(x, y, PREDIO_NOME[b], ha="center", va="center", fontsize=8.5, color="white",
-                fontweight="bold", zorder=4)
-        dy = 0.42 if y > 0 else -0.42
-        ax.text(x, y + dy, f"{nb[b]} aparelhos · {inst.cap[b]} vagas/dia", ha="center",
-                va="bottom" if y > 0 else "top", fontsize=7.5, color="#3d4556", zorder=4)
-    ax.text(1.3, -1.62, f"{inst.m} equipes de 2 técnicos · jornada de {inst.H} min/dia · cada dia começa na SEDE · "
-                        f"troca de sala no mesmo prédio: {inst.T[0, 0]} min",
-            fontsize=7.5, color="#3d4556", ha="center", va="top")
-    ax.set_xlim(-0.8, 3.4)
-    ax.set_ylim(-1.85, 1.45)
+        ax.scatter([x], [y], s=1700, color=PREDIO_COR[b], zorder=3, edgecolor="white", linewidth=2)
+        ax.text(x, y, PREDIO_NOME[b].replace("Anexo ", "A"), ha="center", va="center", fontsize=8.5,
+                color="white", fontweight="bold", zorder=4)
+        ax.text(x + 0.4, y, f"{nb[b]} aparelhos\n{inst.cap[b]} vagas/dia", ha="left", va="center",
+                fontsize=7, color="#3d4556", zorder=4)
+    ax.set_xlim(-0.6, 3.9)
+    ax.set_ylim(-1.8, 1.6)
     ax.axis("off")
+    ax.set_title(f"{inst.n} aparelhos · {inst.m} equipes de 2 técnicos · {inst.H} min/dia", fontsize=8.5)
+    nomes = [n.replace("Anexo ", "A") for n in PREDIO_NOME[:B]]
+    tab = axt.table(cellText=[[str(v) for v in linha] for linha in inst.T], rowLabels=nomes, colLabels=nomes,
+                    loc="center", cellLoc="center")
+    tab.auto_set_font_size(False)
+    tab.set_fontsize(8)
+    tab.scale(1, 1.5)
+    for (r, c), cel in tab.get_celld().items():
+        cel.set_edgecolor("#c3c2b7")
+        if r == 0 or c == -1:
+            cel.set_text_props(fontweight="bold", color="#14213d")
+        elif r - 1 == c:
+            cel.set_facecolor("#ecebe5")
+    axt.axis("off")
+    axt.set_title("Deslocamento (min); diagonal: troca de sala/andar", fontsize=8.5)
+    fig.tight_layout()
     fig.savefig(os.path.join(F, "esquema_problema.pdf"))
     fig.savefig(os.path.join(F, "esquema_problema.png"), dpi=200)
 
@@ -87,7 +95,7 @@ def exemplo_decodificador():
     eixos[1].set_xlabel("Minutos do dia (jornada H = 420 min)")
     eixos[1].set_xlim(0, inst.H + 10)
     handles = [plt.Rectangle((0, 0), 1, 1, color=c) for c in PREDIO_COR] + [plt.Rectangle((0, 0), 1, 1, color="#c3c2b7")]
-    fig.legend(handles, PREDIO_NOME + ["Deslocamento"], loc="lower center", ncol=5, fontsize=7.5, bbox_to_anchor=(0.5, -0.03))
+    fig.legend(handles, PREDIO_NOME + ["Deslocamento"], loc="lower center", ncol=6, fontsize=7.5, bbox_to_anchor=(0.5, -0.03))
     fig.tight_layout(rect=(0, 0.06, 1, 1))
     fig.savefig(os.path.join(F, "exemplo_decodificador.pdf"))
     fig.savefig(os.path.join(F, "exemplo_decodificador.png"), dpi=200)

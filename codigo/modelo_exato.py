@@ -90,13 +90,13 @@ def resolver_milp(inst, D, limite=LIMITE_MILP):
     # Desigualdades válidas (fortalecem a relaxação linear): a carga de cada
     # equipe em cada dia, contando o menor deslocamento possível até cada
     # aparelho, cabe na jornada e limita o Cmax por baixo.
-    smin = [int(min(T[a, b[j]] for a in range(4))) for j in J]
+    smin = [int(min(T[a, b[j]] for a in range(T.shape[0]))) for j in J]
     for k in K:
         for d in Ds:
             carga = mip.xsum((int(p[j]) + smin[j]) * x[j, k, d] for j in J)
             mod += carga <= H
             mod += Cmax >= d * H * mip.xsum(z[j, k, d] for j in J) + carga
-    for bb in range(4):
+    for bb in range(T.shape[0]):
         for d in Ds:
             mod += mip.xsum(x[j, k, d] for j in J if b[j] == bb for k in K) <= int(cap[bb])
     for k in range(m - 1):

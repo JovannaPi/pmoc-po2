@@ -79,7 +79,7 @@ git push
 
 25 instâncias sintéticas: `ALECE-base` (1050 aparelhos, 7 equipes) e
 `PMOC-n{1000,1250,1500,2000}-m{5,7}-{1,2,3}`. A estrutura vem do caso real
-(4 prédios, equipes de 2 técnicos das 9h às 17h, tipos hi-wall, piso-teto e
+(SEDE + 4 anexos, equipes de 2 técnicos das 9h às 17h, tipos hi-wall, piso-teto e
 cassete). Os tempos de preventiva vêm de um estudo de tempos feito em campo pela autora
 (hi-wall pequeno 2h, hi-wall grande 2h30, piso-teto 3h, cassete 3h30, ±10 min de
 variação de acesso). A composição do parque e os deslocamentos são estimados,
@@ -90,8 +90,8 @@ Formato:
 
 ```
 n m H
-c_SEDE c_A1 c_A2 c_A3          (vagas por prédio por dia)
-matriz 4x4 de deslocamento (min)
+c_SEDE c_A1 c_A2 c_A3 c_A4      (vagas por prédio por dia)
+matriz 5x5 de deslocamento (min)
 id predio tipo btu p           (uma linha por aparelho; p em minutos)
 ```
 

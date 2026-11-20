@@ -22,8 +22,9 @@ class Instancia:
         self.n, self.m, self.H = map(int, linhas[0])
         self.m_arquivo = self.m
         self.cap = np.array(list(map(int, linhas[1])), dtype=np.int64)
-        self.T = np.array([list(map(int, l)) for l in linhas[2:6]], dtype=np.int64)
-        dados = linhas[6:]
+        self.B = len(self.cap)  # número de prédios
+        self.T = np.array([list(map(int, l)) for l in linhas[2:2 + self.B]], dtype=np.int64)
+        dados = linhas[2 + self.B:]
         self.predio = np.array([int(l[1]) for l in dados], dtype=np.int64)
         self.tipo = [l[2] for l in dados]
         self.btu = [int(l[3]) for l in dados]
@@ -40,7 +41,7 @@ def decodificar(seq, L, predio, p, T, cap, m, H, maxD):
     dia = np.zeros(m, np.int64)
     t = np.zeros(m, np.int64)
     loc = np.zeros(m, np.int64)
-    uso = np.zeros((maxD, 4), np.int64)
+    uso = np.zeros((maxD, cap.shape[0]), np.int64)
     desloc = 0
     for idx in range(L):
         j = seq[idx]
@@ -137,7 +138,7 @@ def plano_regra_atual(inst):
     'vale' o mesmo e o deslocamento é ignorado. Devolve o dia planejado de
     cada aparelho."""
     dia_plan = np.zeros(inst.n, dtype=np.int64)
-    cont = np.zeros(4, dtype=np.int64)
+    cont = np.zeros(inst.B, dtype=np.int64)
     for j in range(inst.n):
         b = inst.predio[j]
         dia_plan[j] = cont[b] // inst.cap[b]
@@ -167,7 +168,10 @@ def construtiva_lpt_neh(inst):
     sufixo = "" if inst.m == inst.m_arquivo else f"_m{inst.m}"
     arq = os.path.join(pasta, os.path.basename(inst.caminho)[:-4] + sufixo + ".npy")
     if os.path.exists(arq):
-        return np.load(arq)
+        seq = np.load(arq)
+        # só usa o cache se for uma permutação válida desta instância
+        if len(seq) == inst.n and np.array_equal(np.sort(seq), np.arange(inst.n)):
+            return seq.astype(np.int64)
     ordem = np.argsort(-inst.p, kind="stable").astype(np.int64)
     seq = neh(ordem, *inst.args())
     os.makedirs(pasta, exist_ok=True)
@@ -176,10 +180,11 @@ def construtiva_lpt_neh(inst):
 
 
 def limite_inferior(inst):
-    """Limite inferior simples do Cmax: carga mínima (tempo + 5 min de
-    deslocamento interno por aparelho) dividida igualmente entre equipes,
-    considerando a perda de fim de dia nula."""
-    return int(np.ceil((inst.p.sum() + 5 * inst.n) / inst.m))
+    """Limite inferior simples do Cmax: carga mínima (tempo + menor
+    deslocamento possível até cada aparelho) dividida igualmente entre as
+    equipes, considerando nula a perda de fim de dia."""
+    smin = inst.T.min(axis=0)[inst.predio]
+    return int(np.ceil((inst.p.sum() + smin.sum()) / inst.m))
 
 
 # ------------------------------------------------------------------
@@ -218,7 +223,7 @@ def avaliar_limite(seq, L, lim, predio, p, T, cap, m, H, maxD):
     dia = np.zeros(m, np.int64)
     t = np.zeros(m, np.int64)
     loc = np.zeros(m, np.int64)
-    uso = np.zeros((maxD, 4), np.int64)
+    uso = np.zeros((maxD, cap.shape[0]), np.int64)
     cmax = 0
     for idx in range(L):
         j = seq[idx]
@@ -245,7 +250,7 @@ def melhor_insercao_rapida(parcial, L, j, predio, p, T, cap, m, H, maxD):
     dia = np.zeros(m, np.int64)
     t = np.zeros(m, np.int64)
     loc = np.zeros(m, np.int64)
-    uso = np.zeros((maxD, 4), np.int64)
+    uso = np.zeros((maxD, cap.shape[0]), np.int64)
     dd = np.empty(m, np.int64)
     tt = np.empty(m, np.int64)
     ll = np.empty(m, np.int64)
