@@ -77,6 +77,18 @@ def main():
         dunn = sp.posthoc_dunn(ex, val_col="rpd", group_col="algoritmo", p_adjust="bonferroni")
         out.append("== Dunn (Bonferroni)\n" + dunn.loc[ALGS, ALGS].to_string())
         dunn.to_csv(os.path.join(R, "dunn.csv"))
+    # Teste de Friedman (blocos = instâncias): compara os algoritmos dentro de
+    # cada instância, sem supor independência entre execuções da mesma
+    # instância. Pós-teste de Nemenyi.
+    bloco = ex.groupby(["instancia", "algoritmo"]).rpd.mean().unstack()[ALGS]
+    fr = stats.friedmanchisquare(*[bloco[a].values for a in ALGS])
+    ranks = bloco.rank(axis=1).mean()
+    out.append(f"== Friedman (blocos = {len(bloco)} instâncias) Q={fr.statistic:.3f} p={fr.pvalue:.2e}\n"
+               "Posto médio: " + ", ".join(f"{a}={ranks[a]:.2f}" for a in ALGS))
+    nem = sp.posthoc_nemenyi_friedman(bloco.values)
+    nem.index = nem.columns = ALGS
+    out.append("== Nemenyi (pós-teste de Friedman)\n" + nem.to_string())
+    nem.to_csv(os.path.join(R, "nemenyi.csv"))
     med = ex.groupby("algoritmo").rpd.agg(["mean", "median", "std"]).loc[ALGS]
     out.append("== Resumo RPD\n" + med.round(3).to_string())
 
@@ -168,6 +180,70 @@ def main():
     fig.tight_layout()
     fig.savefig(os.path.join(F, "convergencia.pdf"))
     fig.savefig(os.path.join(F, "convergencia.png"), dpi=200)
+
+    # Convergência por iteração (um painel por algoritmo, instância ALECE-base)
+    if "iteracao" in conv.columns:
+        c = conv[(conv.instancia == "ALECE-base") & conv.iteracao.notna()]
+        nome_it = {"IG": "Iteração (destruição + construção)", "VNS": "Iteração (shaking + VND)",
+                   "ILS": "Iteração (perturbação + busca local)", "AG": "Geração"}
+        fig, eixos = plt.subplots(1, 4, figsize=(9, 2.4), sharey=True)
+        for ax, alg in zip(eixos, ALGS):
+            reps = list(c[c.algoritmo == alg].groupby("rep"))
+            if not reps:
+                continue
+            itmax = max(int(g.iteracao.max()) for _, g in reps)
+            grade = np.linspace(0, itmax, 300)
+            curvas = []
+            for _, g in reps:
+                g = g.sort_values("iteracao")
+                idx = np.searchsorted(g.iteracao.values, grade, side="right") - 1
+                curvas.append(g.f.values[np.clip(idx, 0, None)])
+            curvas = np.array(curvas)
+            ax.fill_between(grade, np.percentile(curvas, 25, axis=0), np.percentile(curvas, 75, axis=0),
+                            step="post", color=COR[alg], alpha=0.2, linewidth=0)
+            ax.step(grade, np.median(curvas, axis=0), where="post", color=COR[alg], linewidth=2)
+            ax.set_title(alg, fontsize=9)
+            ax.set_xlabel(nome_it[alg], fontsize=7)
+        eixos[0].set_ylabel("Melhor Cmax (min)")
+        fig.suptitle("ALECE-base: mediana e intervalo interquartil das 30 execuções", fontsize=8)
+        fig.tight_layout()
+        fig.savefig(os.path.join(F, "convergencia_iteracoes.pdf"))
+        fig.savefig(os.path.join(F, "convergencia_iteracoes.png"), dpi=200)
+
+    # RPD médio por tamanho de instância
+    fig, ax = plt.subplots(figsize=(4.6, 2.7))
+    g = ex[ex.instancia != "ALECE-base"].groupby(["n", "algoritmo"]).rpd.mean().unstack()
+    for alg in ALGS:
+        ax.plot(g.index, g[alg], marker="o", markersize=5, linewidth=2, color=COR[alg], label=alg)
+    ax.set_xlabel("Número de aparelhos (n)")
+    ax.set_ylabel("RPD médio (%)")
+    ax.set_xticks(list(g.index))
+    ax.legend(fontsize=8, ncol=4, loc="upper center", bbox_to_anchor=(0.5, 1.18))
+    fig.savefig(os.path.join(F, "rpd_por_tamanho.pdf"))
+    fig.savefig(os.path.join(F, "rpd_por_tamanho.png"), dpi=200)
+
+    # Histórico do Optuna: desvio de cada tentativa e a melhor configuração da grade
+    arq_t = os.path.join(R, "optuna_tentativas.csv")
+    arq_c = os.path.join(R, "calibracao_comparacao.csv")
+    if os.path.exists(arq_t) and os.path.exists(arq_c):
+        tent = pd.read_csv(arq_t)
+        comp = pd.read_csv(arq_c).set_index("algoritmo")
+        fig, eixos = plt.subplots(1, 4, figsize=(9, 2.4))
+        for ax, alg in zip(eixos, ALGS):
+            t = tent[tent.algoritmo == alg].sort_values("tentativa")
+            if t.empty:
+                continue
+            ax.plot(t.tentativa + 1, t.desvio, "o", color=COR[alg], markersize=4, alpha=0.6, label="Tentativa")
+            ax.step(t.tentativa + 1, t.desvio.cummin(), where="post", color=COR[alg], linewidth=2, label="Melhor até aqui")
+            if alg in comp.index:
+                ax.axhline(comp.loc[alg, "desvio_grade"], color="#55554f", linestyle="--", linewidth=1, label="Melhor da grade")
+            ax.set_title(alg, fontsize=9)
+            ax.set_xlabel("Tentativa do Optuna")
+        eixos[0].set_ylabel("Desvio (%)")
+        eixos[0].legend(fontsize=6)
+        fig.tight_layout()
+        fig.savefig(os.path.join(F, "optuna_historico.pdf"))
+        fig.savefig(os.path.join(F, "optuna_historico.png"), dpi=200)
 
 
 if __name__ == "__main__":

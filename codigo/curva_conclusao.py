@@ -53,6 +53,8 @@ def main():
     ax.set_xlabel("Dia útil do ciclo")
     ax.set_ylabel("Aparelhos concluídos")
     ax.set_xlim(0, D)
+    from matplotlib.ticker import MaxNLocator
+    ax.xaxis.set_major_locator(MaxNLocator(integer=True))
     ax.set_ylim(0, inst.n * 1.05)
     ax.legend(loc="lower right", fontsize=8)
     fig.savefig(os.path.join(BASE, "figuras", "curva_conclusao_alece.pdf"))
@@ -60,6 +62,19 @@ def main():
     pd.DataFrame(dict(dia=x, plano=acumulado(d_plan, D), regra_atual=acumulado(d_ra, D),
                       melhor=acumulado(d_mh, D))).to_csv(
         os.path.join(BASE, "resultados", "curva_conclusao_alece.csv"), index=False)
+    # Gantt ampliado: os 2 primeiros dias do ciclo (o ciclo inteiro é ilegível)
+    from gantt import desenhar, PREDIO_COR, PREDIO_NOME
+    p_ra, p_mh = programa(inst, ra), programa(inst, s)
+    fig, eixos = plt.subplots(2, 1, figsize=(7, 4.6), sharex=True)
+    for ax, df, rot in [(eixos[0], p_ra, "Regra atual"), (eixos[1], p_mh, f"Melhor solução ({a.algoritmo})")]:
+        dd = df[df.dia < 2]
+        desenhar(ax, dd, inst.H, f"{rot} — dias 1 e 2: {len(dd)} aparelhos concluídos, "
+                                 f"{int(dd.desloc.sum())} min de deslocamento", 2)
+    handles = [plt.Rectangle((0, 0), 1, 1, color=c) for c in PREDIO_COR] + [plt.Rectangle((0, 0), 1, 1, color="#c3c2b7")]
+    fig.legend(handles, PREDIO_NOME + ["Deslocamento"], loc="lower center", ncol=5, fontsize=8, bbox_to_anchor=(0.5, -0.02))
+    fig.tight_layout(rect=(0, 0.05, 1, 1))
+    fig.savefig(os.path.join(BASE, "figuras", "gantt_alece_dias1e2.pdf"))
+    fig.savefig(os.path.join(BASE, "figuras", "gantt_alece_dias1e2.png"), dpi=200)
     print("plano", d_plan.max() + 1, "RA", c_ra, "MH", a.algoritmo, c_mh)
 
 

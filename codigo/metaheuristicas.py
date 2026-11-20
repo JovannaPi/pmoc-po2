@@ -51,15 +51,19 @@ def ig(inst, d=4, tau=0.4, tempo=5.0, semente=0, historico=False):
     fs = avaliar(s, inst.n, *args)
     best, fbest = s.copy(), fs
     Temp = tau * inst.p.sum() / (inst.n * 10.0)  # temperatura (adaptada)
-    hist = [(0.0, fbest)]
+    destruir_construir(s, 1, *args)  # aquecimento (compilação JIT fora do tempo)
+    hist = [(0.0, fbest, 0)]
+    it = 0
     t0 = time.process_time()
     while time.process_time() - t0 < tempo:
+        it += 1
         s2, f2 = destruir_construir(s, d, *args)
         if f2 < fs or np.random.rand() < np.exp(-(f2 - fs) / Temp):
             s, fs = s2, f2
             if fs < fbest:
                 best, fbest = s.copy(), fs
-                hist.append((time.process_time() - t0, fbest))
+                hist.append((time.process_time() - t0, fbest, it))
+    hist.append((time.process_time() - t0, fbest, it))
     return (best, fbest, hist) if historico else (best, fbest)
 
 
@@ -140,19 +144,23 @@ def vns(inst, kmax=5, fator_L=1.0, tempo=5.0, semente=0, historico=False):
     s = construtiva_lpt_neh(inst)
     fs = avaliar(s, inst.n, *args)
     s, fs = busca_local(s, fs, Lmax, *args)
-    hist = [(0.0, fs)]
+    shaking(s, 1)  # aquecimento (compilação JIT fora do tempo)
+    hist = [(0.0, fs, 0)]
+    it = 0
     t0 = time.process_time()
     k = 1
     while time.process_time() - t0 < tempo:
+        it += 1
         s1 = shaking(s, k)
         f1 = avaliar(s1, inst.n, *args)
         s2, f2 = busca_local(s1, f1, Lmax, *args)
         if f2 < fs:
             s, fs = s2, f2
             k = 1
-            hist.append((time.process_time() - t0, fs))
+            hist.append((time.process_time() - t0, fs, it))
         else:
             k = k + 1 if k < kmax else 1
+    hist.append((time.process_time() - t0, fs, it))
     return (s, fs, hist) if historico else (s, fs)
 
 
@@ -179,9 +187,12 @@ def ils(inst, intensidade=0.1, fator_L=1.0, tempo=5.0, semente=0, historico=Fals
     fs = avaliar(s, inst.n, *args)
     s, fs = busca_local(s, fs, Lmax, *args)
     best, fbest = s.copy(), fs
-    hist = [(0.0, fbest)]
+    perturbar(s, intensidade)  # aquecimento (compilação JIT fora do tempo)
+    hist = [(0.0, fbest, 0)]
+    it = 0
     t0 = time.process_time()
     while time.process_time() - t0 < tempo:
+        it += 1
         s1 = perturbar(s, intensidade)
         f1 = avaliar(s1, inst.n, *args)
         s2, f2 = busca_local(s1, f1, Lmax, *args)
@@ -189,7 +200,8 @@ def ils(inst, intensidade=0.1, fator_L=1.0, tempo=5.0, semente=0, historico=Fals
             s, fs = s2, f2
             if fs < fbest:
                 best, fbest = s.copy(), fs
-                hist.append((time.process_time() - t0, fbest))
+                hist.append((time.process_time() - t0, fbest, it))
+    hist.append((time.process_time() - t0, fbest, it))
     return (best, fbest, hist) if historico else (best, fbest)
 
 
@@ -285,13 +297,17 @@ def ag(inst, tam_pop=50, pm=0.2, tempo=5.0, semente=0, historico=False):
         pop[k] = mutacao_insercao(s0, max(2, n // 50))
     for k in range(tam_pop):
         fit[k] = avaliar(pop[k], n, *args)
-    fbest = fit.min()
-    hist = [(0.0, fbest)]
+    geracao_ag(pop, fit, pm, 1, *args)  # aquecimento (compilação JIT fora do tempo)
+    fbest = float(fit.min())
+    hist = [(0.0, fbest, 0)]
+    it = 0  # gerações
     t0 = time.process_time()
     while time.process_time() - t0 < tempo:
+        it += 1
         geracao_ag(pop, fit, pm, tam_pop, *args)
         if fit.min() < fbest:
-            fbest = fit.min()
-            hist.append((time.process_time() - t0, fbest))
+            fbest = float(fit.min())
+            hist.append((time.process_time() - t0, fbest, it))
+    hist.append((time.process_time() - t0, fbest, it))
     best = pop[np.argmin(fit)].copy()
     return (best, fbest, hist) if historico else (best, fbest)

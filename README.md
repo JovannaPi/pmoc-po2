@@ -10,12 +10,21 @@ diária e limite de vagas por prédio por dia. Objetivo: minimizar o makespan
 (AG). Um modelo MILP (Python-MIP + CBC) valida as meta-heurísticas em
 instâncias pequenas (`codigo/modelo_exato.py`).
 
-## Como rodar (Windows)
+## Como rodar (Windows, pelo VS Code)
 
+**Antes (uma vez só):**
 1. Instale o **Python 3.11 ou mais novo** em https://www.python.org/downloads/
-   (na instalação, marque **"Add python.exe to PATH"**).
-2. Instale o **Git** em https://git-scm.com/download/win (pode aceitar as opções padrão).
-3. Abra o **Prompt de Comando** (tecla Windows → digite `cmd` → Enter) e rode:
+   e marque **"Add python.exe to PATH"** na instalação.
+2. Instale o **Git** em https://git-scm.com/download/win (opções padrão).
+3. **Evite a suspensão:** Configurações → Sistema → Energia → "Quando conectado,
+   colocar o dispositivo em suspensão após" = **Nunca**. Em notebook, também em
+   Painel de Controle → Opções de Energia → "Escolher a função do fechamento da
+   tampa" → **Nada a fazer** (na tomada). Deixe o carregador ligado.
+
+**Rodar:**
+1. Abra o VS Code → menu **Terminal → Novo Terminal**.
+2. No terminal, rode (se você já clonou antes, pule o `git clone` e faça só
+   `cd pmoc-po2` e `git pull`):
 
 ```bat
 git clone https://github.com/JovannaPi/pmoc-po2.git
@@ -25,13 +34,11 @@ cd codigo
 python rodar_tudo.py
 ```
 
-4. Deixe o computador ligado e na tomada, e configure-o para **não entrar em
-   suspensão** durante a execução (Configurações → Sistema → Energia).
-   Tempo estimado: 2 a 4 h, dependendo do número de núcleos do processador.
-5. Se cair, travar ou você precisar desligar: abra o Prompt de Comando de novo,
-   entre na pasta (`cd pmoc-po2\codigo`) e rode `python rodar_tudo.py`.
-   Ele **continua de onde parou**.
-6. Quando terminar (mensagem "Tudo pronto"), envie os resultados:
+3. Pode minimizar o VS Code, mas **não feche** o VS Code nem o terminal. Tempo
+   estimado: 3 a 6 h, conforme o processador. O andamento aparece no terminal.
+4. Se cair ou você fechar sem querer: abra o terminal de novo, `cd pmoc-po2\codigo`
+   e `python rodar_tudo.py`. Ele **continua de onde parou**.
+5. Quando aparecer **"Tudo pronto"**, envie os resultados:
 
 ```bat
 cd ..
@@ -62,8 +69,11 @@ git push
 | 4. Refinamento com Optuna | `calibracao_optuna.py` | `resultados/optuna_*` |
 | 5. Escolha dos parâmetros | `escolher_parametros.py` | `resultados/parametros_finais.json`, `figuras/calibracao_boxplot.*` |
 | 6. Experimento final (30 execuções) | `experimento.py` | `resultados/experimento_execucoes.csv`, `convergencia.csv`, `deterministicos.csv` |
-| 7. Análise estatística | `analise.py` | `resultados/analise_estatistica.txt`, boxplot, Q-Q plot, convergência |
-| 8. Estudo de caso | `curva_conclusao.py` | `figuras/curva_conclusao_alece.*` |
+| 7. Análise estatística | `analise.py` | `resultados/analise_estatistica.txt` (Shapiro-Wilk, Kruskal-Wallis + Dunn, Friedman + Nemenyi), boxplot, Q-Q plot, convergência por tempo e por iteração, RPD por tamanho, histórico do Optuna |
+| 8. Estudo de caso | `curva_conclusao.py` | `figuras/curva_conclusao_alece.*`, `figuras/gantt_alece_dias1e2.*` |
+| 9. Sensibilidade | `sensibilidade_equipes.py` | dias do ciclo com 5 a 9 equipes (`figuras/sensibilidade_equipes.*`) |
+| 10. Figuras de apoio | `figuras_extras.py` | esquema do problema, exemplo do decodificador, tempo do MILP |
+| (já rodado) Validação exata | `modelo_exato.py` | `resultados/validacao_exata.csv` (MILP × meta-heurísticas, 16 instâncias pequenas) |
 
 ## Instâncias
 

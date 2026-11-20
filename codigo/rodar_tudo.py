@@ -23,6 +23,8 @@ ETAPAS = [
     "experimento.py",          # retoma execuções pendentes
     "analise.py",
     "curva_conclusao.py",
+    "sensibilidade_equipes.py",  # 5 a 9 equipes na ALECE-base
+    "figuras_extras.py",         # esquema, exemplo do decodificador, tempo do MILP
 ]
 
 

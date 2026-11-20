@@ -30,9 +30,10 @@ def tarefa(args):
                            historico=True, **params)
     cmax, _, desl, dias = decodificar(s, inst.n, *inst.args())
     linha = dict(instancia=nome, n=inst.n, m=inst.m, algoritmo=alg, rep=rep,
-                 cmax=int(cmax), dias=int(dias), deslocamento=int(desl))
-    conv = [dict(instancia=nome, algoritmo=alg, rep=rep, tempo=t, f=int(f))
-            for t, f in hist] if registrar_conv else []
+                 cmax=int(cmax), dias=int(dias), deslocamento=int(desl),
+                 iteracoes=int(hist[-1][2]))
+    conv = [dict(instancia=nome, algoritmo=alg, rep=rep, tempo=t, f=int(f), iteracao=int(it))
+            for t, f, it in hist] if registrar_conv else []
     if nome == "ALECE-base":  # guarda a solução para as figuras do estudo de caso
         pasta = os.path.join(BASE, "resultados", "solucoes")
         os.makedirs(pasta, exist_ok=True)

@@ -20,6 +20,7 @@ class Instancia:
         with open(caminho) as f:
             linhas = [l.split() for l in f if l.strip()]
         self.n, self.m, self.H = map(int, linhas[0])
+        self.m_arquivo = self.m
         self.cap = np.array(list(map(int, linhas[1])), dtype=np.int64)
         self.T = np.array([list(map(int, l)) for l in linhas[2:6]], dtype=np.int64)
         dados = linhas[6:]
@@ -163,7 +164,8 @@ def construtiva_lpt_neh(inst):
     ser recalculado em cada execução."""
     import os
     pasta = os.path.join(os.path.dirname(inst.caminho), "neh")
-    arq = os.path.join(pasta, os.path.basename(inst.caminho)[:-4] + ".npy")
+    sufixo = "" if inst.m == inst.m_arquivo else f"_m{inst.m}"
+    arq = os.path.join(pasta, os.path.basename(inst.caminho)[:-4] + sufixo + ".npy")
     if os.path.exists(arq):
         return np.load(arq)
     ordem = np.argsort(-inst.p, kind="stable").astype(np.int64)
