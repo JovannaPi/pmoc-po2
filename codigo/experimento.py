@@ -14,7 +14,8 @@ import pandas as pd
 
 sys.path.insert(0, os.path.dirname(__file__))
 from config import PROCESSOS
-from calibracao import BASE, TEMPO_POR_APARELHO, instancias_calibracao, FUNC
+from calibracao import BASE, instancias_calibracao, FUNC
+from config import TEMPO_EXPERIMENTO
 from pmoc import (Instancia, decodificar, regra_atual, construtiva_lpt_neh,
                   dias_planejados, limite_inferior)
 
@@ -26,7 +27,7 @@ def tarefa(args):
     caminho, alg, params, rep, registrar_conv = args
     inst = Instancia(caminho)
     nome = os.path.basename(caminho)[:-4]
-    s, _, hist = FUNC[alg](inst, tempo=TEMPO_POR_APARELHO * inst.n, semente=rep,
+    s, _, hist = FUNC[alg](inst, tempo=TEMPO_EXPERIMENTO * inst.n, semente=rep,
                            historico=True, **params)
     cmax, _, desl, dias = decodificar(s, inst.n, *inst.args())
     linha = dict(instancia=nome, n=inst.n, m=inst.m, algoritmo=alg, rep=rep,

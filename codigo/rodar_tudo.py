@@ -31,8 +31,9 @@ ETAPAS = [
 def main():
     os.makedirs(R, exist_ok=True)
     os.makedirs(F, exist_ok=True)
-    from config import PROCESSOS, TEMPO_POR_APARELHO
-    print(f"Processos em paralelo: {PROCESSOS} | tempo por execução: {TEMPO_POR_APARELHO}·n s\n")
+    from config import PROCESSOS, TEMPO_POR_APARELHO, TEMPO_EXPERIMENTO
+    print(f"Processos em paralelo: {PROCESSOS} | tempo por execução: calibração {TEMPO_POR_APARELHO}·n s, "
+          f"experimento {TEMPO_EXPERIMENTO}·n s\n")
     inicio = time.time()
     for script in ETAPAS:
         if script == "gerar_instancias.py" and os.path.exists(

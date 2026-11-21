@@ -17,7 +17,7 @@ import numpy as np
 import pandas as pd
 
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
-from config import PROCESSOS, TEMPO_POR_APARELHO
+from config import PROCESSOS, TEMPO_EXPERIMENTO
 from pmoc import Instancia, decodificar, regra_atual, dias_planejados, construtiva_lpt_neh
 from metaheuristicas import ig, vns, ils, ag
 from estilo import aplicar_estilo, COR, CINZA
@@ -42,7 +42,7 @@ def neh(m):
 def tarefa(args):
     m, alg, params, rep = args
     inst = carregar(m)
-    s, _ = FUNC[alg](inst, tempo=TEMPO_POR_APARELHO * inst.n, semente=100 + rep, **params)
+    s, _ = FUNC[alg](inst, tempo=TEMPO_EXPERIMENTO * inst.n, semente=100 + rep, **params)
     c = decodificar(s, inst.n, *inst.args())
     return dict(equipes=m, rep=rep, cmax=int(c[0]), dias=int(c[3]), deslocamento=int(c[2]))
 
