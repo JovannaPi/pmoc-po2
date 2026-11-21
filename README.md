@@ -23,12 +23,9 @@ instâncias pequenas (`codigo/modelo_exato.py`).
 
 **Rodar:**
 1. Abra o VS Code → menu **Terminal → Novo Terminal**.
-2. No terminal, rode (se você já clonou antes, pule o `git clone` e faça só
-   `cd pmoc-po2` e `git pull`):
+2. No terminal, entre na pasta do projeto e rode:
 
 ```bat
-git clone https://github.com/JovannaPi/pmoc-po2.git
-cd pmoc-po2
 pip install -r requirements.txt
 cd codigo
 python rodar_tudo.py
