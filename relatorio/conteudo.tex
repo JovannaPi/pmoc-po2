@@ -1,8 +1,10 @@
 \section{Definição do problema}
 
-A Lei n.º 13.589/2018 obriga edifícios de uso público a manter um Plano de Manutenção, Operação e Controle (PMOC) dos sistemas de climatização \cite{brasil2018lei}. Na Assembleia Legislativa do Ceará (ALECE), a manutenção preventiva cobre mais de mil aparelhos (\textit{split hi-wall}, piso-teto e cassete) em quatro prédios (SEDE e Anexos I, II e III), executada por 7 equipes de 2 técnicos, das 9h às 17h. O sistema de gestão do PMOC agenda cada ciclo com uma regra simples: cada prédio tem um número fixo de \textit{vagas por dia}, preenchidas em ordem de cadastro. A regra trata todos os aparelhos como iguais e ignora o deslocamento entre prédios, de modo que o plano promete menos dias do que o ciclo realmente leva.
+A Lei n.º 13.589/2018 obriga edifícios de uso público a manter um Plano de Manutenção, Operação e Controle (PMOC) dos sistemas de climatização \cite{brasil2018lei}. Na Assembleia Legislativa do Ceará (ALECE), a manutenção preventiva cobre mais de mil aparelhos (\textit{split hi-wall}, piso-teto e cassete) distribuídos em cinco prédios (SEDE e Anexos I a IV), e é executada por 7 equipes de 2 técnicos, das 9h às 17h, com 1h de almoço. O sistema de gestão do PMOC agenda cada ciclo com uma regra simples: cada prédio tem um número fixo de \textit{vagas por dia}, preenchidas em ordem de cadastro. A regra trata todos os aparelhos como iguais e ignora o deslocamento entre prédios, de modo que o plano promete menos dias do que o ciclo realmente leva.
 
-\textbf{Modelo.} Sejam $J$ os aparelhos, $K$ as equipes (idênticas), $D$ os dias e $b_j$ o prédio do aparelho $j$, com tempo de manutenção $p_j$. A jornada útil é $H=420$ min. O deslocamento de $b$ para $b'$ é $s_{bb'}$, com $s_{bb}=5$ min para troca de sala, e cada dia começa na SEDE ($b=0$). O prédio $b$ aceita até $c_b$ aparelhos por dia. As variáveis são: $x_{jkd}=1$ se $j$ é atendido pela equipe $k$ no dia $d$; $z_{jkd}=1$ se $j$ é o primeiro da equipe $k$ no dia $d$; $y_{ijkd}=1$ se $j$ sucede $i$; $S_j$ é o início do atendimento de $j$ no dia; e $C_{\max}$ é o \textit{makespan} em minutos úteis acumulados.
+Para quantificar esse efeito, a autora fez um estudo de tempos acompanhando a equipe em campo. Uma preventiva completa leva, em média, 2h em um \textit{hi-wall} pequeno (9 a 12 mil BTU), 2h30 em um \textit{hi-wall} grande (18 a 24 mil BTU), 3h em um piso-teto e 3h30 em um cassete. O deslocamento entre prédios varia de 8 a 20 min, por causa de escadas, elevadores e da travessia da Av.~Pontes Vieira, e trocar de sala ou de andar no mesmo prédio leva cerca de 8 min.
+
+\textbf{Modelo.} Sejam $J$ os aparelhos, $K$ as equipes (idênticas), $D$ os dias e $b_j$ o prédio do aparelho $j$, com tempo de manutenção $p_j$. A jornada útil é $H=420$ min. O deslocamento de $b$ para $b'$ é $s_{bb'}$, e cada dia começa na SEDE ($b=0$). O prédio $b$ aceita até $c_b$ aparelhos por dia. As variáveis são: $x_{jkd}=1$ se $j$ é atendido pela equipe $k$ no dia $d$; $z_{jkd}=1$ se $j$ é o primeiro da equipe $k$ no dia $d$; $y_{ijkd}=1$ se $j$ sucede $i$; $S_j$ é o início do atendimento de $j$ no dia; e $C_{\max}$ é o \textit{makespan} em minutos úteis acumulados.
 \begin{align}
 \min\; & C_{\max} \nonumber\\
 \text{s.a.}\; & \textstyle\sum_{k,d} x_{jkd} = 1, \qquad z_{jkd} + \sum_{i\neq j} y_{ijkd} = x_{jkd}, \qquad \sum_{l\neq j} y_{jlkd} \le x_{jkd} && \forall j,k,d \label{eq:atrib}\\
@@ -24,21 +26,15 @@ As restrições \eqref{eq:atrib}--\eqref{eq:inicio} formam uma sequência por eq
 
 \textbf{Calibração.} Seguiu-se a metodologia da disciplina: 30\% das instâncias (7 de 24), todas as combinações de uma grade por algoritmo, 5 execuções cada e escolha pelo menor desvio médio em relação à melhor solução da instância. As grades foram: IG $d\in\{2,4,6\}\times\tau\in\{0{,}1;0{,}4;0{,}8\}$; VNS $k_{\max}\in\{3,5\}\times L\in\{0{,}5n;n;2n\}$; ILS int $\in\{1;2{,}5;5\}\%\times L\in\{0{,}5n;n;2n\}$; AG $P\in\{20,50,100\}\times p_m\in\{0{,}05;0{,}2\}$. Em seguida, o Optuna \cite{akiba2019optuna} (TPE, 12 tentativas, 2 execuções por instância) explorou intervalos mais amplos, e ficou a melhor configuração entre as duas etapas.
 
-\textbf{Configuração experimental.} Como os dados do sistema são internos, foram geradas 25 instâncias sintéticas com a estrutura real: prédios com 40/25/20/15\% dos aparelhos; tipos \textit{hi-wall} (60\%), piso-teto (25\%) e cassete (15\%), com tempos de 40--65, 60--85 e 75--100 min conforme o porte (BTU) e o acesso; deslocamentos de 8 a 20 min; e vagas diárias 30\% acima da distribuição uniforme. A ALECE-base ($n=1050$, $m=7$) representa o caso real. As demais combinam $n\in\{1000,1250,1500,2000\}$ e $m\in\{5,7\}$, com 3 réplicas. Nas 18 instâncias de teste, cada meta-heurística foi executada 30 vezes, com $0{,}006n$ s de CPU (6 a 12 s); a busca local inicial do VNS e do ILS (até 4\% desse tempo) não é contada. Para validar o método, o modelo (1)--(6) foi resolvido com o CBC (Python-MIP) em 16 instâncias pequenas ($n=5$ a $8$, $m\in\{1,2\}$), e cada meta-heurística foi executada 10 vezes por 1 s em cada uma. A implementação foi feita em Python 3.12 com Numba, em um notebook de 4 núcleos lógicos. Código, instâncias e resultados estão em \url{https://github.com/JovannaPi/pmoc-po2}.
+\textbf{Configuração experimental.} Como os dados do sistema são internos, foram geradas 25 instâncias sintéticas com a estrutura real: os cinco prédios com 35/15/20/15/15\% dos aparelhos; tipos \textit{hi-wall} (60\%), piso-teto (25\%) e cassete (15\%); tempos do estudo de campo com variação de $\pm10$ min conforme o acesso; e vagas diárias 30\% acima da distribuição uniforme, como no sistema. A ALECE-base ($n=1050$, $m=7$) representa o caso real. As demais combinam $n\in\{1000,1250,1500,2000\}$ e $m\in\{5,7\}$, com 3 réplicas. Na calibração, cada execução teve $0{,}006n$ s de CPU. Como as curvas de convergência ainda caíam ao fim desse tempo, o experimento final usou $0{,}02n$ s (20 a 40 s), igual para os quatro métodos. Nas 18 instâncias de teste, cada meta-heurística foi executada 30 vezes; a busca local inicial do VNS e do ILS (até 4\% do tempo) não é contada. Para validar o método, o modelo \eqref{eq:atrib}--\eqref{eq:cmax} foi resolvido com o CBC (Python-MIP, limite de 600 s) em 16 instâncias pequenas ($n\in\{6,8,10,12\}$, $m\in\{1,2\}$), e cada meta-heurística foi executada 10 vezes por 1 s em cada uma. Tudo foi implementado em Python 3.12 com Numba, em um notebook de 4 núcleos. Código, instâncias e resultados estão em \url{https://github.com/JovannaPi/pmoc-po2}.
 
 \section{Análise e discussão dos resultados}
 
-\textbf{Validação exata.} O CBC provou a otimalidade nas 16 instâncias pequenas. O tempo médio passou de 0,15 s com $n=5$ para 52,6 s com $n=8$, o que mostra o crescimento explosivo que inviabiliza o modelo exato na escala real. Com os parâmetros calibrados, as meta-heurísticas atingiram o ótimo em todas as instâncias, em 639 das 640 execuções (só uma execução do ILS não o encontrou). Isso mostra que o decodificador não exclui as soluções ótimas nessas instâncias e que os métodos as encontram.
+\textbf{Validação exata.} O CBC provou a otimalidade em 15 das 16 instâncias pequenas. O tempo médio passou de 0,14 s com $n=6$ para 17,4 s com $n=10$ e 283 s com $n=12$, e em uma instância com $n=12$ o limite de 600 s terminou sem prova de otimalidade (melhor solução 1006 min, limite inferior 964). Esse crescimento explosivo inviabiliza o modelo exato na escala real. Nas 15 instâncias resolvidas, as quatro meta-heurísticas atingiram o ótimo em todas as 600 execuções, e na instância em aberto encontraram 1001 min, abaixo da melhor solução do CBC. A LPT+NEH sozinha foi ótima em 8 das 16. Logo, o decodificador não exclui as soluções ótimas, e em instâncias pequenas todos os métodos melhoram a construtiva.
 
-\textbf{Calibração.} A \autoref{fig:calib} mostra a grade. O Optuna melhorou o IG ($d=2$, $\tau=1{,}08$; desvio de 0,61\% para 0,49\%) e o VNS ($k_{\max}=2$, $L=2{,}4n$; de 0,51\% para 0,49\%). Para o ILS (int $=1\%$, $L=0{,}5n$) e o AG ($P=100$, $p_m=0{,}05$), a grade foi melhor. Destruições e perturbações pequenas funcionaram melhor, o que é coerente com a escala: com mais de mil aparelhos, mexer em poucos de cada vez preserva a estrutura da solução.
+\textbf{Calibração.} O Optuna melhorou o VNS ($k_{\max}=5$, $L=0{,}32n$; desvio de 0,59\% para 0,21\%) e o ILS (int $=9{,}3\%$, $L=0{,}32n$; de 0,80\% para 0,72\%). Para o AG ($P=50$, $p_m=0{,}2$) e o IG ($d=2$, $\tau=0{,}1$), a grade foi melhor ou igual. No IG, todas as combinações deram o mesmo desvio: o método não saiu da solução inicial, o que já antecipava o resultado do experimento.
 
-\begin{figure}[!htbp]
-    \centering
-    \caption{\label{fig:calib} Calibração por grade: desvio percentual relativo por combinação (7 instâncias, 5 execuções). Em vermelho, a melhor combinação.}
-    \includegraphics[width=\textwidth]{figuras/calibracao_boxplot.pdf}
-\end{figure}
-
-\textbf{Comparação.} A \autoref{tab:rpd} mostra o RPD em relação à melhor solução conhecida. As meta-heurísticas ficam, em média, a 0,2--0,35\% dela, contra 6,1\% da regra atual e 0,66\% da LPT+NEH. Os RPDs não são normais (Shapiro-Wilk, $p<10^{-23}$), então seguiu-se o caminho não paramétrico \cite{derrac2011practical}. O teste de Kruskal-Wallis aponta diferença ($H=41{,}2$; $p=5{,}9\times10^{-9}$), e o pós-teste de Dunn (Bonferroni) separa dois grupos: ILS e VNS são melhores que IG e AG ($p<0{,}001$), sem diferença dentro de cada grupo. Como as 30 execuções de uma instância não são independentes, aplicou-se também o teste de Friedman, com as instâncias como blocos \cite{demsar2006statistical}: $Q=17{,}5$, $p=5{,}5\times10^{-4}$, com postos médios ILS 1,92, VNS 2,14, IG 2,42 e AG 3,53. Pelo pós-teste de Nemenyi, apenas o AG difere dos demais ($p<0{,}05$). O ILS é, portanto, o mais consistente, e as diferenças diminuem com o tamanho: com $n=2000$, os quatro métodos ficam abaixo de 0,13\%.
+\textbf{Comparação.} A \autoref{tab:rpd} mostra o RPD em relação à melhor solução conhecida de cada instância. A regra atual fica, em média, 7,7\% acima dela. A LPT+NEH já reduz essa distância para 0,50\%, e o VNS é o único método que melhora a construtiva de forma consistente (0,37\%). O IG e o AG terminaram, em todas as execuções, com a própria solução LPT+NEH. Os RPDs não são normais (Shapiro-Wilk, $p<10^{-15}$), então seguiu-se o caminho não paramétrico \cite{derrac2011practical}. O teste de Kruskal-Wallis aponta diferença ($H=29{,}1$; $p=2{,}2\times10^{-6}$), e o pós-teste de Dunn (Bonferroni) separa o VNS dos demais ($p<10^{-4}$ contra IG e AG; $p=0{,}005$ contra o ILS). Como as 30 execuções de uma instância não são independentes, aplicou-se também o teste de Friedman, com as instâncias como blocos \cite{demsar2006statistical}: $Q=30{,}0$, $p=1{,}4\times10^{-6}$, com postos médios VNS 1,56, ILS 2,28, IG 3,08 e AG 3,08. Pelo pós-teste de Nemenyi, o VNS é melhor que o IG e o AG ($p=0{,}002$), e a diferença para o ILS não é significativa ($p=0{,}34$).
 
 \begin{table}[htb]
     \centering
@@ -50,18 +46,18 @@ As restrições \eqref{eq:atrib}--\eqref{eq:inicio} formam uma sequência por eq
         \cmidrule(lr){2-7}\cmidrule(lr){8-11}
         $n$ & Regra atual & LPT+NEH & IG & VNS & ILS & AG & IG & VNS & ILS & AG \\
         \midrule
-        1000 & 6,20 & 1,99 & 0,90 & 0,68 & 0,59 & 0,81 & 61 & 81 & 92 & 60 \\
-        1050$^*$ & 6,22 & 1,56 & 0,86 & 0,35 & 0,36 & 0,39 & 70 & 100 & 100 & 100 \\
-        1250 & 6,08 & 0,36 & 0,21 & 0,21 & 0,16 & 0,29 & 100 & 100 & 100 & 100 \\
-        1500 & 5,95 & 0,40 & 0,26 & 0,11 & 0,13 & 0,14 & 100 & 100 & 100 & 100 \\
-        2000 & 6,25 & 0,13 & 0,10 & 0,10 & 0,09 & 0,12 & 100 & 100 & 100 & 100 \\
+        1000 & 8,03 & 0,65 & 0,65 & 0,55 & 0,62 & 0,65 & 67 & 92 & 70 & 67 \\
+        1050$^*$ & 7,04 & 0,36 & 0,36 & 0,25 & 0,35 & 0,36 & 100 & 100 & 100 & 100 \\
+        1250 & 8,24 & 0,60 & 0,60 & 0,45 & 0,58 & 0,60 & 75 & 75 & 76 & 75 \\
+        1500 & 7,66 & 0,39 & 0,39 & 0,20 & 0,36 & 0,39 & 83 & 100 & 89 & 83 \\
+        2000 & 7,28 & 0,48 & 0,48 & 0,44 & 0,44 & 0,48 & 100 & 100 & 100 & 100 \\
         \midrule
-        Média & 6,10 & 0,66 & 0,35 & 0,24 & 0,22 & 0,30 & 92 & 97 & 99 & 93 \\
+        Média & 7,73 & 0,50 & 0,50 & 0,37 & 0,47 & 0,50 & 83 & 93 & 86 & 83 \\
         \bottomrule
     \end{tabular}
 \end{table}
 
-\textbf{Iterações.} A \autoref{fig:conv} mostra a convergência na ALECE-base. O VNS faz poucas iterações, pois cada busca local é cara, mas já parte de uma solução muito boa. O ILS faz cerca de 100 iterações, com ganhos pequenos e contínuos. O AG evolui por mais de 1500 gerações e se aproxima dos dois. O IG melhora mais devagar e varia mais entre execuções, o que explica a sua maior dispersão.
+\textbf{Iterações.} A \autoref{fig:conv} explica a diferença. Em média, cada execução fez cerca de 330 iterações do IG, 970 do VNS, 940 do ILS e 5300 gerações do AG. O $C_{\max}$ depende apenas do último dia do ciclo, então a maior parte dos movimentos não o altera e a busca anda sobre platôs. Remover e reinserir 2 de mais de mil aparelhos (IG), ou cruzar e mutar permutações (AG), raramente mexe nesse último dia. Já a busca local do VNS testa muitas trocas e inserções por iteração e encontra as poucas que encurtam o fim do ciclo.
 
 \begin{figure}[!htbp]
     \centering
@@ -69,7 +65,7 @@ As restrições \eqref{eq:atrib}--\eqref{eq:inicio} formam uma sequência por eq
     \includegraphics[width=0.95\textwidth]{figuras/convergencia_iteracoes.pdf}
 \end{figure}
 
-\textbf{Impacto prático.} Na ALECE-base, o sistema promete 19 dias, mas a regra atual leva 28 quando se consideram os tempos reais e os deslocamentos. As meta-heurísticas fecham o ciclo em 26 dias (todas as execuções de VNS, ILS e AG) e reduzem o deslocamento em cerca de 7\%. O limite inferior é de 24 dias (carga total dividida pelas equipes). Em todas as instâncias, os métodos reduzem o $C_{\max}$ da regra atual em 5,5\%, cerca de 2,5 dias por ciclo. A \autoref{fig:impacto}b mostra ainda que nem com 9 equipes o ciclo cabe nos 19 dias do plano: o número de dias do sistema é otimista por construção, e um planejamento confiável precisa do tempo de cada aparelho.
+\textbf{Impacto prático.} Na ALECE-base, o sistema promete 45 dias, mas a regra atual leva 74 quando se consideram os tempos do estudo de campo e os deslocamentos. Os métodos propostos fecham o ciclo em 69 dias em todas as execuções, 5 dias a menos, e reduzem o deslocamento total em cerca de 7,7\% (de 12\,975 para 11\,978 min no VNS). O limite inferior (carga total dividida pelas equipes) é de 58,5 dias. Considerando todas as instâncias de teste, o VNS reduz o $C_{\max}$ da regra atual em 6,8\%, cerca de 8 dias por ciclo. A \autoref{fig:impacto}b mostra ainda que nem com 9 equipes o ciclo cabe nos 45 dias do plano (seriam 56): o número de dias do sistema é otimista por construção, e um planejamento confiável precisa do tempo de cada aparelho.
 
 \begin{figure}[!htbp]
     \centering
@@ -83,14 +79,12 @@ As restrições \eqref{eq:atrib}--\eqref{eq:inicio} formam uma sequência por eq
     \begin{subfigure}[b]{0.46\textwidth}
         \centering
         \includegraphics[width=\textwidth]{figuras/sensibilidade_equipes.pdf}
-        \caption{Sensibilidade (ILS)}
+        \caption{Sensibilidade (VNS)}
     \end{subfigure}
 \end{figure}
 
 \section{Conclusões}
 
-Este trabalho modelou a programação da manutenção preventiva (PMOC) dos aparelhos de ar-condicionado da ALECE como um problema de máquinas paralelas com tempos de preparação dependentes da sequência, jornada diária e limite de vagas por prédio. Foram propostos um modelo de programação inteira mista e quatro meta-heurísticas (IG, VNS, ILS e AG), calibradas pela metodologia da disciplina com refinamento pelo Optuna.
+Este trabalho modelou a programação do PMOC da ALECE como um problema de máquinas paralelas com tempos de preparação dependentes da sequência, jornada diária e vagas por prédio, usando tempos medidos em campo, e o resolveu com um modelo exato e quatro meta-heurísticas calibradas. O modelo exato confirmou que as meta-heurísticas encontram o ótimo nas instâncias pequenas, mas o seu tempo cresce rápido demais para a escala real. Com mais de mil aparelhos, a maior parte do ganho sobre a regra atual vem da heurística construtiva LPT+NEH, e o VNS foi o único método que a melhorou de forma consistente, com diferença estatisticamente significativa em relação ao IG e ao AG. Na prática, o plano atual subestima o ciclo em 29 dias no caso de referência, e a programação proposta encurta a execução real em 5 dias, além de permitir dimensionar quantas equipes são necessárias para um prazo desejado.
 
-O modelo exato confirmou que as meta-heurísticas encontram o ótimo nas instâncias pequenas, mas o seu tempo cresce rápido demais para a escala real. Com mais de mil aparelhos, ILS e VNS foram os métodos mais eficazes, com diferença estatisticamente significativa em relação ao IG e ao AG. Na prática, o plano atual subestima o ciclo em 9 dias no caso de referência. As meta-heurísticas encurtam o ciclo em 2 dias em relação à execução real da regra atual e permitem dimensionar quantas equipes são necessárias para um prazo desejado.
-
-Como limitação, as instâncias são sintéticas, porque os dados do sistema são internos. Como trabalhos futuros, sugerem-se: (i) estimar os tempos com um estudo de tempos em campo; (ii) incluir a periodicidade das tarefas do PMOC e as restrições de dia por setor; (iii) desenvolver uma matheurística que use o modelo exato para reotimizar dias; e (iv) integrar o método ao módulo de cronograma do sistema.
+Como limitações, as instâncias são sintéticas, porque os dados do sistema são internos, e o tempo de execução é curto para instâncias com mais de mil aparelhos. Como trabalhos futuros, sugerem-se: (i) vizinhanças focadas no último dia do ciclo, que é o que define o $C_{\max}$; (ii) incluir a periodicidade das tarefas do PMOC e as restrições de dia por setor; (iii) uma matheurística que use o modelo exato para reotimizar os últimos dias; e (iv) integrar o método ao módulo de cronograma do sistema.
