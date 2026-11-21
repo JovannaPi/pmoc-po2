@@ -1,6 +1,6 @@
 """
 Gráfico de Gantt (equipes x dias) da melhor solução encontrada para a
-instância ALECE-base, comparado com a execução real da regra atual.
+instância Caso-base, comparado com a execução real da regra atual.
 """
 import json
 import os
@@ -74,9 +74,9 @@ def desenhar(ax, df, H, titulo, ndias):
 
 def main():
     aplicar_estilo()
-    inst = Instancia(os.path.join(BASE, "instancias", "ALECE-base.txt"))
+    inst = Instancia(os.path.join(BASE, "instancias", "Caso-base.txt"))
     ex = pd.read_csv(os.path.join(BASE, "resultados", "experimento_execucoes.csv"))
-    a = ex[ex.instancia == "ALECE-base"].sort_values("cmax").iloc[0]
+    a = ex[ex.instancia == "Caso-base"].sort_values("cmax").iloc[0]
     with open(os.path.join(BASE, "resultados", "parametros_finais.json")) as f:
         P = json.load(f)
     fun = {"IG": ig, "VNS": vns, "ILS": ils}[a.algoritmo]
@@ -93,8 +93,8 @@ def main():
     handles = [plt.Rectangle((0, 0), 1, 1, color=c) for c in PREDIO_COR] + [plt.Rectangle((0, 0), 1, 1, color="#c3c2b7")]
     fig.legend(handles, PREDIO_NOME + ["Deslocamento"], loc="lower center", ncol=6, fontsize=8, bbox_to_anchor=(0.5, -0.02))
     fig.tight_layout(rect=(0, 0.05, 1, 1))
-    fig.savefig(os.path.join(BASE, "figuras", "gantt_alece.pdf"))
-    fig.savefig(os.path.join(BASE, "figuras", "gantt_alece.png"), dpi=200)
+    fig.savefig(os.path.join(BASE, "figuras", "gantt_caso.pdf"))
+    fig.savefig(os.path.join(BASE, "figuras", "gantt_caso.png"), dpi=200)
     print("RA", c_ra, "MH", a.algoritmo, c_mh, "esperado", a.cmax)
 
 

@@ -24,15 +24,15 @@ F = os.path.join(BASE, "figuras")
 
 
 def esquema():
-    inst = Instancia(os.path.join(BASE, "instancias", "ALECE-base.txt"))
+    inst = Instancia(os.path.join(BASE, "instancias", "Caso-base.txt"))
     B = inst.B
     nb = np.bincount(inst.predio, minlength=B)
     # posições aproximadas, como no mapa (SEDE e Anexo I juntos; III e IV do
-    # outro lado da Av. Pontes Vieira)
+    # outro lado da avenida movimentada)
     pos = {0: (0.0, 1.05), 1: (0.15, 0.05), 2: (1.45, 0.55), 3: (1.1, -1.25), 4: (2.75, -0.85)}
     fig, (ax, axt) = plt.subplots(1, 2, figsize=(8.2, 3.6), gridspec_kw={"width_ratios": [1.25, 1]})
     ax.plot([-0.6, 3.9], [-0.6, -0.05], color="#9a9a92", linewidth=6, alpha=0.35, zorder=0)
-    ax.text(3.85, 0.08, "Av. Pontes Vieira", fontsize=7, color="#55554f", ha="right", style="italic")
+    ax.text(3.85, 0.08, "Avenida", fontsize=7, color="#55554f", ha="right", style="italic")
     for b, (x, y) in pos.items():
         ax.scatter([x], [y], s=1700, color=PREDIO_COR[b], zorder=3, edgecolor="white", linewidth=2)
         ax.text(x, y, PREDIO_NOME[b].replace("Anexo ", "A"), ha="center", va="center", fontsize=8.5,

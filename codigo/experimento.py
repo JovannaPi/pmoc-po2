@@ -20,7 +20,7 @@ from pmoc import (Instancia, decodificar, regra_atual, construtiva_lpt_neh,
                   dias_planejados, limite_inferior)
 
 EXECUCOES = 30
-INST_CONVERGENCIA = []  # definida em main(): ALECE-base + maior instância de teste
+INST_CONVERGENCIA = []  # definida em main(): Caso-base + maior instância de teste
 
 
 def tarefa(args):
@@ -35,7 +35,7 @@ def tarefa(args):
                  iteracoes=int(hist[-1][2]))
     conv = [dict(instancia=nome, algoritmo=alg, rep=rep, tempo=t, f=int(f), iteracao=int(it))
             for t, f, it in hist] if registrar_conv else []
-    if nome == "ALECE-base":  # guarda a solução para as figuras do estudo de caso
+    if nome == "Caso-base":  # guarda a solução para as figuras do estudo de caso
         pasta = os.path.join(BASE, "resultados", "solucoes")
         os.makedirs(pasta, exist_ok=True)
         np.save(os.path.join(pasta, f"{nome}_{alg}_{rep}.npy"), s)
@@ -45,9 +45,9 @@ def tarefa(args):
 def main():
     calib, todas = instancias_calibracao()
     teste = [c for c in todas if c not in calib]
-    teste.append(os.path.join(BASE, "instancias", "ALECE-base.txt"))
+    teste.append(os.path.join(BASE, "instancias", "Caso-base.txt"))
     maior = max((c for c in teste if "-m7-" in c), key=lambda c: (Instancia(c).n, c))
-    INST_CONVERGENCIA[:] = ["ALECE-base", os.path.basename(maior)[:-4]]
+    INST_CONVERGENCIA[:] = ["Caso-base", os.path.basename(maior)[:-4]]
     print("Convergência registrada em:", INST_CONVERGENCIA, flush=True)
     with open(os.path.join(BASE, "resultados", "parametros_finais.json")) as f:
         PARAMS = json.load(f)

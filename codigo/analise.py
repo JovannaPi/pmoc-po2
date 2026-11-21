@@ -92,9 +92,9 @@ def main():
     med = ex.groupby("algoritmo").rpd.agg(["mean", "median", "std"]).loc[ALGS]
     out.append("== Resumo RPD\n" + med.round(3).to_string())
 
-    # ---------------- caso ALECE-base
-    a = ex[ex.instancia == "ALECE-base"]
-    d = det[det.instancia == "ALECE-base"]
+    # ---------------- caso Caso-base
+    a = ex[ex.instancia == "Caso-base"]
+    d = det[det.instancia == "Caso-base"]
     caso = [dict(metodo="Plano do sistema (modelo simplificado)", dias=int(d.dias_planejados.iloc[0]),
                  cmax=np.nan, deslocamento=np.nan)]
     for alg in ["Regra atual", "LPT+NEH"]:
@@ -106,8 +106,8 @@ def main():
                          deslocamento=r.deslocamento.mean(), melhor_cmax=r.cmax.min(),
                          sucesso=r.sucesso.mean() * 100, sucesso_dias=r.sucesso_dias.mean() * 100))
     caso = pd.DataFrame(caso)
-    caso.to_csv(os.path.join(R, "caso_alece.csv"), index=False)
-    out.append("== Caso ALECE-base (LB Cmax = %d min)\n" % d.lb.iloc[0] + caso.round(2).to_string())
+    caso.to_csv(os.path.join(R, "caso_base.csv"), index=False)
+    out.append("== Caso Caso-base (LB Cmax = %d min)\n" % d.lb.iloc[0] + caso.round(2).to_string())
 
     # Ganho médio frente à regra atual, em dias e minutos (todas as instâncias de teste)
     ra = det[det.algoritmo == "Regra atual"].set_index("instancia")
@@ -161,7 +161,7 @@ def main():
     # Convergência (iterações): mediana entre as 30 execuções do melhor Cmax
     conv = pd.read_csv(os.path.join(R, "convergencia.csv"))
     fig, eixos = plt.subplots(1, 2, figsize=(5.4, 2.5))
-    nomes_conv = ["ALECE-base"] + sorted(i for i in conv.instancia.unique() if i != "ALECE-base")
+    nomes_conv = ["Caso-base"] + sorted(i for i in conv.instancia.unique() if i != "Caso-base")
     for ax, inst in zip(eixos, nomes_conv):
         c = conv[conv.instancia == inst]
         tmax = c.tempo.max()
@@ -181,9 +181,9 @@ def main():
     fig.savefig(os.path.join(F, "convergencia.pdf"))
     fig.savefig(os.path.join(F, "convergencia.png"), dpi=200)
 
-    # Convergência por iteração (um painel por algoritmo, instância ALECE-base)
+    # Convergência por iteração (um painel por algoritmo, instância Caso-base)
     if "iteracao" in conv.columns:
-        c = conv[(conv.instancia == "ALECE-base") & conv.iteracao.notna()]
+        c = conv[(conv.instancia == "Caso-base") & conv.iteracao.notna()]
         nome_it = {"IG": "Iteração (destruição + construção)", "VNS": "Iteração (shaking + VND)",
                    "ILS": "Iteração (perturbação + busca local)", "AG": "Geração"}
         fig, eixos = plt.subplots(1, 4, figsize=(7, 2.5), sharey=True)
@@ -205,14 +205,14 @@ def main():
             ax.set_title(alg, fontsize=9)
             ax.set_xlabel(nome_it[alg], fontsize=7)
         eixos[0].set_ylabel("Melhor Cmax (min)")
-        fig.suptitle("ALECE-base: mediana e intervalo interquartil das 30 execuções", fontsize=8)
+        fig.suptitle("Caso-base: mediana e intervalo interquartil das 30 execuções", fontsize=8)
         fig.tight_layout()
         fig.savefig(os.path.join(F, "convergencia_iteracoes.pdf"))
         fig.savefig(os.path.join(F, "convergencia_iteracoes.png"), dpi=200)
 
     # RPD médio por tamanho de instância
     fig, ax = plt.subplots(figsize=(4.6, 2.7))
-    g = ex[ex.instancia != "ALECE-base"].groupby(["n", "algoritmo"]).rpd.mean().unstack()
+    g = ex[ex.instancia != "Caso-base"].groupby(["n", "algoritmo"]).rpd.mean().unstack()
     for alg in ALGS:
         ax.plot(g.index, g[alg], marker="o", markersize=5, linewidth=2, color=COR[alg], label=alg)
     ax.set_xlabel("Número de aparelhos (n)")

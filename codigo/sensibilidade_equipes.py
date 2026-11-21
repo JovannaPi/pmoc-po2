@@ -1,5 +1,5 @@
 """
-Análise de sensibilidade: quantos dias o ciclo da ALECE-base leva com 5 a 9
+Análise de sensibilidade: quantos dias o ciclo da Caso-base leva com 5 a 9
 equipes. Usa o algoritmo de menor RPD médio no experimento final, com os
 parâmetros calibrados (5 execuções por cenário), e compara com o plano do
 sistema e com a execução real da regra atual. As vagas por prédio por dia
@@ -30,7 +30,7 @@ FUNC = {"IG": ig, "VNS": vns, "ILS": ils, "AG": ag}
 
 
 def carregar(m):
-    inst = Instancia(os.path.join(BASE, "instancias", "ALECE-base.txt"))
+    inst = Instancia(os.path.join(BASE, "instancias", "Caso-base.txt"))
     inst.m = m
     return inst
 

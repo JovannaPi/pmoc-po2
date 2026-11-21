@@ -23,7 +23,7 @@ ETAPAS = [
     "experimento.py",          # retoma execuções pendentes
     "analise.py",
     "curva_conclusao.py",
-    "sensibilidade_equipes.py",  # 5 a 9 equipes na ALECE-base
+    "sensibilidade_equipes.py",  # 5 a 9 equipes na Caso-base
     "figuras_extras.py",         # esquema, exemplo do decodificador, tempo do MILP
 ]
 
@@ -37,7 +37,7 @@ def main():
     inicio = time.time()
     for script in ETAPAS:
         if script == "gerar_instancias.py" and os.path.exists(
-                os.path.join(AQUI, "..", "instancias", "ALECE-base.txt")):
+                os.path.join(AQUI, "..", "instancias", "Caso-base.txt")):
             print(f"[pulando] {script} (instâncias já existem)")
             continue
         print(f"\n=== {script} ===", flush=True)

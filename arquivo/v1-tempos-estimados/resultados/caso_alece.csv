@@ -1,8 +1,0 @@
-metodo,dias,cmax,deslocamento,melhor_cmax,sucesso,sucesso_dias
-Plano do sistema (modelo simplificado),19.0,,,,,
-Regra atual,28.0,11473.0,9084.0,,,
-LPT+NEH,27.0,10970.0,8401.0,,,
-IG (média 30 exec.),26.266666666666666,10894.4,8555.266666666666,10801.0,70.0,73.33333333333333
-VNS (média 30 exec.),26.0,10838.933333333332,8411.766666666666,10829.0,100.0,100.0
-ILS (média 30 exec.),26.0,10840.3,8430.7,10832.0,100.0,100.0
-AG (média 30 exec.),26.0,10842.9,8406.1,10820.0,100.0,100.0

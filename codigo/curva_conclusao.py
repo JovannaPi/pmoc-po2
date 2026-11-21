@@ -1,5 +1,5 @@
 """
-Estudo de caso ALECE-base: aparelhos concluídos ao fim de cada dia útil.
+Estudo de caso Caso-base: aparelhos concluídos ao fim de cada dia útil.
 Compara o plano do sistema (modelo simplificado), a execução real da regra
 atual (tempos reais + deslocamento) e a melhor solução das meta-heurísticas.
 """
@@ -28,10 +28,10 @@ def acumulado(dias, D):
 
 def main():
     aplicar_estilo()
-    inst = Instancia(os.path.join(BASE, "instancias", "ALECE-base.txt"))
+    inst = Instancia(os.path.join(BASE, "instancias", "Caso-base.txt"))
     ex = pd.read_csv(os.path.join(BASE, "resultados", "experimento_execucoes.csv"))
-    a = ex[ex.instancia == "ALECE-base"].sort_values(["cmax", "algoritmo", "rep"]).iloc[0]
-    s = np.load(os.path.join(BASE, "resultados", "solucoes", f"ALECE-base_{a.algoritmo}_{int(a.rep)}.npy"))
+    a = ex[ex.instancia == "Caso-base"].sort_values(["cmax", "algoritmo", "rep"]).iloc[0]
+    s = np.load(os.path.join(BASE, "resultados", "solucoes", f"Caso-base_{a.algoritmo}_{int(a.rep)}.npy"))
     c_mh = decodificar(s, inst.n, *inst.args())
     assert c_mh[0] == a.cmax
     ra = regra_atual(inst)
@@ -57,11 +57,11 @@ def main():
     ax.xaxis.set_major_locator(MaxNLocator(integer=True))
     ax.set_ylim(0, inst.n * 1.05)
     ax.legend(loc="lower right", fontsize=8)
-    fig.savefig(os.path.join(BASE, "figuras", "curva_conclusao_alece.pdf"))
-    fig.savefig(os.path.join(BASE, "figuras", "curva_conclusao_alece.png"), dpi=200)
+    fig.savefig(os.path.join(BASE, "figuras", "curva_conclusao_caso.pdf"))
+    fig.savefig(os.path.join(BASE, "figuras", "curva_conclusao_caso.png"), dpi=200)
     pd.DataFrame(dict(dia=x, plano=acumulado(d_plan, D), regra_atual=acumulado(d_ra, D),
                       melhor=acumulado(d_mh, D))).to_csv(
-        os.path.join(BASE, "resultados", "curva_conclusao_alece.csv"), index=False)
+        os.path.join(BASE, "resultados", "curva_conclusao_caso.csv"), index=False)
     # Gantt ampliado: os 2 primeiros dias do ciclo (o ciclo inteiro é ilegível)
     from gantt import desenhar, PREDIO_COR, PREDIO_NOME
     p_ra, p_mh = programa(inst, ra), programa(inst, s)
@@ -73,8 +73,8 @@ def main():
     handles = [plt.Rectangle((0, 0), 1, 1, color=c) for c in PREDIO_COR] + [plt.Rectangle((0, 0), 1, 1, color="#c3c2b7")]
     fig.legend(handles, PREDIO_NOME + ["Deslocamento"], loc="lower center", ncol=6, fontsize=8, bbox_to_anchor=(0.5, -0.02))
     fig.tight_layout(rect=(0, 0.05, 1, 1))
-    fig.savefig(os.path.join(BASE, "figuras", "gantt_alece_dias1e2.pdf"))
-    fig.savefig(os.path.join(BASE, "figuras", "gantt_alece_dias1e2.png"), dpi=200)
+    fig.savefig(os.path.join(BASE, "figuras", "gantt_caso_dias1e2.pdf"))
+    fig.savefig(os.path.join(BASE, "figuras", "gantt_caso_dias1e2.png"), dpi=200)
     print("plano", d_plan.max() + 1, "RA", c_ra, "MH", a.algoritmo, c_mh)
 
 

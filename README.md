@@ -70,14 +70,14 @@ git push
 | 5. Escolha dos parâmetros | `escolher_parametros.py` | `resultados/parametros_finais.json`, `figuras/calibracao_boxplot.*` |
 | 6. Experimento final (30 execuções) | `experimento.py` | `resultados/experimento_execucoes.csv`, `convergencia.csv`, `deterministicos.csv` |
 | 7. Análise estatística | `analise.py` | `resultados/analise_estatistica.txt` (Shapiro-Wilk, Kruskal-Wallis + Dunn, Friedman + Nemenyi), boxplot, Q-Q plot, convergência por tempo e por iteração, RPD por tamanho, histórico do Optuna |
-| 8. Estudo de caso | `curva_conclusao.py` | `figuras/curva_conclusao_alece.*`, `figuras/gantt_alece_dias1e2.*` |
+| 8. Estudo de caso | `curva_conclusao.py` | `figuras/curva_conclusao_caso.*`, `figuras/gantt_caso_dias1e2.*` |
 | 9. Sensibilidade | `sensibilidade_equipes.py` | dias do ciclo com 5 a 9 equipes (`figuras/sensibilidade_equipes.*`) |
 | 10. Figuras de apoio | `figuras_extras.py` | esquema do problema, exemplo do decodificador, tempo do MILP |
 | (à parte) Validação exata | `modelo_exato.py` | `resultados/validacao_exata.csv` (MILP × meta-heurísticas, 16 instâncias pequenas); rodada depois do experimento, com os parâmetros calibrados |
 
 ## Instâncias
 
-25 instâncias sintéticas: `ALECE-base` (1050 aparelhos, 7 equipes) e
+25 instâncias sintéticas: `Caso-base` (1050 aparelhos, 7 equipes) e
 `PMOC-n{1000,1250,1500,2000}-m{5,7}-{1,2,3}`. A estrutura vem do caso real
 (SEDE + 4 anexos, equipes de 2 técnicos das 9h às 17h, tipos hi-wall, piso-teto e
 cassete). Os tempos de preventiva vêm de um estudo de tempos feito em campo pela autora

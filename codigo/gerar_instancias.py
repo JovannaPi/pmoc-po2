@@ -2,7 +2,7 @@
 Gerador de instâncias sintéticas para o problema de programação da
 manutenção preventiva (PMOC) de aparelhos de ar-condicionado.
 
-As instâncias seguem a estrutura real da ALECE (SEDE + 4 anexos, equipes de 2
+As instâncias seguem a estrutura real do órgão estudado (SEDE + 4 anexos, equipes de 2
 técnicos, jornada de 9h às 17h com 1h de almoço). Os tempos de preventiva vêm
 de um estudo de tempos feito em campo; a composição do parque e os
 deslocamentos são estimados (o cadastro do sistema é interno).
@@ -22,7 +22,7 @@ TIPOS = ["HIWALL", "PISOTETO", "CASSETE"]
 
 # Deslocamento entre prédios (min), estimado a partir do mapa e da experiência
 # da equipe: caminhada com ferramentas e material, escadas e elevadores, e
-# travessia da Av. Pontes Vieira (Anexos III e IV ficam do outro lado).
+# travessia da avenida movimentada (Anexos III e IV ficam do outro lado).
 # Diagonal: troca de sala/andar no mesmo prédio (escadas e elevadores).
 DESLOC = np.array([
     [8, 8, 10, 15, 20],
@@ -41,7 +41,7 @@ BTUS = {
     "CASSETE": [24000, 36000, 48000, 60000],
 }
 # Tempos médios de preventiva (min, equipe de 2 técnicos), obtidos em estudo de
-# tempos feito pela autora acompanhando a equipe de manutenção da ALECE:
+# tempos feito pela autora acompanhando a equipe de manutenção do órgão estudado:
 #   split hi-wall pequeno (9-12 mil BTU) 2h; grande (18-24 mil BTU) 2h30;
 #   piso-teto 3h; cassete 3h30.
 TEMPO_MEDIO = {"HIWALL": [120, 120, 150, 150], "PISOTETO": [180] * 4, "CASSETE": [210] * 4}
@@ -86,7 +86,7 @@ if __name__ == "__main__":
     pasta = os.path.join(os.path.dirname(__file__), "..", "instancias")
     os.makedirs(pasta, exist_ok=True)
     # Instância de referência, com porte semelhante ao caso real
-    gerar(1050, 7, 2026, "ALECE-base", pasta)
+    gerar(1050, 7, 2026, "Caso-base", pasta)
     semente = 1
     for n in [1000, 1250, 1500, 2000]:
         for m in [5, 7]:
