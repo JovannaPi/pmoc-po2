@@ -1,0 +1,5 @@
+algoritmo,grade,desvio_grade,optuna,desvio_optuna,escolhido
+IG,"{""d"": 2, ""tau"": 0.1}",0.8184670531542191,"{""d"": 10, ""tau"": 0.086}",0.8184670531542191,Grade
+VNS,"{""kmax"": 5, ""fator_L"": 0.5}",0.5868436351436304,"{""kmax"": 5, ""fator_L"": 0.318}",0.2100979904934084,Optuna
+ILS,"{""intensidade"": 0.05, ""fator_L"": 2.0}",0.7962530033249096,"{""intensidade"": 0.093, ""fator_L"": 0.318}",0.7233295214657441,Optuna
+AG,"{""tam_pop"": 50, ""pm"": 0.2}",0.8049663989374946,"{""tam_pop"": 10, ""pm"": 0.276}",0.8184670531542191,Grade
