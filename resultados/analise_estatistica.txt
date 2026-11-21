@@ -1,0 +1,60 @@
+== RPD médio (%) e taxa de sucesso (%) por porte
+       RPD Regra atual  RPD LPT+NEH  RPD IG  RPD VNS  RPD ILS  RPD AG   TS IG  TS VNS  TS ILS   TS AG  TSdias IG  TSdias VNS  TSdias ILS  TSdias AG
+1000              8.03         0.65    0.65     0.55     0.62    0.65   66.67   92.22   70.00   66.67      33.33       35.56       36.67      33.33
+1050              7.04         0.36    0.36     0.25     0.35    0.36  100.00  100.00  100.00  100.00     100.00      100.00      100.00     100.00
+1250              8.24         0.60    0.60     0.45     0.58    0.60   75.00   75.00   75.83   75.00      25.00       44.17       26.67      25.00
+1500              7.66         0.39    0.39     0.20     0.36    0.39   83.33  100.00   88.89   83.33      50.00       88.89       55.56      50.00
+2000              7.28         0.48    0.48     0.44     0.44    0.48  100.00  100.00  100.00  100.00      25.00       36.67       30.00      25.00
+Média             7.73         0.50    0.50     0.37     0.47    0.50   83.33   93.15   85.93   83.33      38.89       59.07       42.78      38.89
+
+== Shapiro-Wilk
+IG: W=0.9193 p=2.12e-16
+VNS: W=0.8637 p=2.87e-21
+ILS: W=0.9147 p=7.06e-17
+AG: W=0.9193 p=2.12e-16
+
+== Kruskal-Wallis H=29.070 p=2.17e-06
+
+== Dunn (Bonferroni)
+           IG       VNS       ILS        AG
+IG   1.000000  0.000019  1.000000  1.000000
+VNS  0.000019  1.000000  0.004639  0.000019
+ILS  1.000000  0.004639  1.000000  1.000000
+AG   1.000000  0.000019  1.000000  1.000000
+
+== Friedman (blocos = 18 instâncias) Q=30.029 p=1.36e-06
+Posto médio: IG=3.08, VNS=1.56, ILS=2.28, AG=3.08
+
+== Nemenyi (pós-teste de Friedman)
+           IG       VNS       ILS        AG
+IG   1.000000  0.002178  0.240162  1.000000
+VNS  0.002178  1.000000  0.335170  0.002178
+ILS  0.240162  0.335170  1.000000  0.240162
+AG   1.000000  0.002178  0.240162  1.000000
+
+== Resumo RPD
+            mean  median    std
+algoritmo                      
+IG         0.498   0.449  0.390
+VNS        0.369   0.257  0.367
+ILS        0.470   0.401  0.385
+AG         0.498   0.449  0.390
+
+== Caso ALECE-base (LB Cmax = 24589 min)
+                                   metodo  dias      cmax  deslocamento  melhor_cmax  sucesso  sucesso_dias
+0  Plano do sistema (modelo simplificado)  45.0       NaN           NaN          NaN      NaN           NaN
+1                             Regra atual  74.0  30849.00      12975.00          NaN      NaN           NaN
+2                                 LPT+NEH  69.0  28925.00      12006.00          NaN      NaN           NaN
+3                     IG (média 30 exec.)  69.0  28925.00      12006.00      28925.0    100.0         100.0
+4                    VNS (média 30 exec.)  69.0  28893.47      11978.37      28874.0    100.0         100.0
+5                    ILS (média 30 exec.)  69.0  28920.17      11994.40      28820.0    100.0         100.0
+6                     AG (média 30 exec.)  69.0  28925.00      12006.00      28925.0    100.0         100.0
+
+== Redução média vs regra atual
+           red_cmax  red_dias
+algoritmo                    
+AG             6.70      7.94
+IG             6.70      7.94
+ILS            6.73      7.98
+VNS            6.82      8.15
+Dias a mais da regra atual em relação ao plano (média): 48.56

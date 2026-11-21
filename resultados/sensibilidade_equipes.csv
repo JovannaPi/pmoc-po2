@@ -1,0 +1,6 @@
+equipes,plano_sistema,regra_atual,melhor_dias,media_dias,deslocamento_regra_atual,deslocamento_medio,algoritmo
+5,45,102,96,96.0,12640,11737.8,VNS
+6,45,85,80,80.0,12121,11832.4,VNS
+7,45,74,69,69.0,12975,11987.8,VNS
+8,45,66,61,61.0,12906,12056.2,VNS
+9,45,59,56,56.0,13067,11912.4,VNS
