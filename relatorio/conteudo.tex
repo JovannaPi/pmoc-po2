@@ -20,7 +20,7 @@ As restrições \eqref{eq:atrib}--\eqref{eq:inicio} formam uma sequência por eq
 
 \section{Método proposto}
 
-\textbf{Representação e decodificação.} Uma solução é uma permutação $\pi$ dos aparelhos. O decodificador percorre $\pi$ e atribui cada aparelho à equipe que o conclui mais cedo. Se não houver tempo no dia ou vaga no prédio, o aparelho passa ao primeiro dia seguinte com vaga, partindo da SEDE. Assim, toda permutação gera uma programação viável. A avaliação é $f(\pi)=C_{\max}+10^{-7}\sum_k(d_kH+t_k)$, em que o segundo termo só desempata.
+\textbf{Representação e decodificação.} Uma solução é uma permutação $\pi$ dos aparelhos. O decodificador percorre $\pi$ e atribui cada aparelho à equipe que o conclui mais cedo. Se não houver tempo no dia ou vaga no prédio, o aparelho passa ao primeiro dia seguinte com vaga, partindo da SEDE. Assim, toda permutação gera uma programação viável. A avaliação é o $C_{\max}$, com desempate pela soma dos términos das equipes.
 
 \textbf{Heurísticas de referência.} (i) \textit{Regra atual}: reproduz o sistema do órgão e é executada com os tempos reais e os deslocamentos. (ii) \textit{LPT+NEH}: ordena os aparelhos pelo maior $p_j$ e insere cada um na melhor posição \cite{nawaz1983heuristic}. A LPT+NEH também é a solução inicial das quatro meta-heurísticas.
 
@@ -28,7 +28,7 @@ As restrições \eqref{eq:atrib}--\eqref{eq:inicio} formam uma sequência por eq
 
 \textbf{Calibração.} Seguiu-se a metodologia da disciplina: 30\% das instâncias (7 de 24), todas as combinações de uma grade por algoritmo, 5 execuções cada e escolha pelo menor desvio médio em relação à melhor solução da instância. As grades foram: IG $d\in\{2,4,6\}\times\tau\in\{0{,}1;0{,}4;0{,}8\}$; VNS $k_{\max}\in\{3,5\}\times L\in\{0{,}5n;n;2n\}$; ILS int $\in\{1;2{,}5;5\}\%\times L\in\{0{,}5n;n;2n\}$; AG $P\in\{20,50,100\}\times p_m\in\{0{,}05;0{,}2\}$. Em seguida, o Optuna \cite{akiba2019optuna} (TPE, 12 tentativas, 2 execuções por instância) explorou intervalos mais amplos, e ficou a melhor configuração entre as duas etapas.
 
-\textbf{Configuração experimental.} Como os dados do sistema são internos, foram geradas 25 instâncias sintéticas com a estrutura real: os cinco prédios com 35/15/20/15/15\% dos aparelhos; tipos \textit{hi-wall} (60\%), piso-teto (25\%) e cassete (15\%); tempos do estudo de campo com variação de $\pm10$ min conforme o acesso; e vagas diárias 30\% acima da distribuição uniforme, como no sistema. O Caso-base ($n=1050$, $m=7$) representa o caso real. As demais combinam $n\in\{1000,1250,1500,2000\}$ e $m\in\{5,7\}$, com 3 réplicas. A calibração usou $0{,}006n$ s por execução; como as curvas de convergência ainda caíam, o experimento final usou $0{,}02n$ s (20 a 40 s) para todos os métodos. Nas 18 instâncias de teste, cada meta-heurística foi executada 30 vezes; a busca local inicial do VNS e do ILS (até 4\% do tempo) não é contada. Para validar o método, o modelo \eqref{eq:atrib}--\eqref{eq:cmax} foi resolvido com o CBC (limite de 600 s) em 16 instâncias pequenas ($n\in\{6,8,10,12\}$, $m\in\{1,2\}$), e cada meta-heurística foi executada 10 vezes por 1 s em cada uma. O código (Python 3.12 e Numba) e os dados acompanham este relatório.
+\textbf{Configuração experimental.} Como os dados do sistema são internos, foram geradas 25 instâncias sintéticas com a estrutura real: os cinco prédios com 35/15/20/15/15\% dos aparelhos; tipos \textit{hi-wall} (60\%), piso-teto (25\%) e cassete (15\%); tempos do estudo de campo com variação de $\pm10$ min conforme o acesso; e vagas diárias 30\% acima da distribuição uniforme, como no sistema. O Caso-base ($n=1050$, $m=7$) representa o caso real. As demais combinam $n\in\{1000,1250,1500,2000\}$ e $m\in\{5,7\}$, com 3 réplicas. A calibração usou $0{,}006n$ s por execução; como as curvas de convergência ainda caíam, o experimento final usou $0{,}02n$ s (20 a 40 s) para todos os métodos. Nas 18 instâncias de teste, cada meta-heurística foi executada 30 vezes; a busca local inicial do VNS e do ILS (até 4\% do tempo) não é contada. Para validar o método, o modelo \eqref{eq:atrib}--\eqref{eq:cmax} foi resolvido com o CBC (limite de 600 s) em 16 instâncias pequenas ($n\in\{6,8,10,12\}$, $m\in\{1,2\}$), e cada meta-heurística foi executada 10 vezes por 1 s em cada uma. Calibração e experimento rodaram em um notebook com Intel Core i3-1115G4 (3,0 GHz, 2 núcleos, 4 \textit{threads}), 4 GB de RAM e Windows; a validação exata, em Linux (Intel Xeon 2,3 GHz, 8 GB). O código (Python 3.12 e Numba) e os dados acompanham este relatório.
 
 \section{Análise e discussão dos resultados}
 
@@ -82,13 +82,13 @@ As restrições \eqref{eq:atrib}--\eqref{eq:inicio} formam uma sequência por eq
 \begin{figure}[!htbp]
     \centering
     \caption{\label{fig:impacto} Caso-base: (a) aparelhos concluídos por dia; (b) dias do ciclo por número de equipes.}
-    \begin{subfigure}[b]{0.47\textwidth}
+    \begin{subfigure}[b]{0.44\textwidth}
         \centering
         \includegraphics[width=\textwidth]{figuras/curva_conclusao_caso.pdf}
         \caption{Plano, regra atual e melhor solução}
     \end{subfigure}
     \hfill
-    \begin{subfigure}[b]{0.42\textwidth}
+    \begin{subfigure}[b]{0.40\textwidth}
         \centering
         \includegraphics[width=\textwidth]{figuras/sensibilidade_equipes.pdf}
         \caption{Sensibilidade (VNS)}
@@ -99,4 +99,4 @@ As restrições \eqref{eq:atrib}--\eqref{eq:inicio} formam uma sequência por eq
 
 Este trabalho modelou a programação do PMOC de um órgão público como um problema de máquinas paralelas. Os tempos de preparação dependem da sequência, e o problema inclui a jornada diária e as vagas por prédio. Os tempos foram medidos em campo. O problema foi resolvido com um modelo exato e com quatro meta-heurísticas calibradas. O modelo exato mostrou que as meta-heurísticas encontram o ótimo em pequenas instâncias. No entanto, o tempo de execução do modelo cresce muito rápido quando a escala é grande. Quando há mais de mil aparelhos, a maior parte do ganho em relação à regra atual vem da heurística construtiva LPT+NEH. O VNS foi o único método que melhorou a solução de forma consistente. Essa melhoria foi estatisticamente significativa em comparação ao IG e ao AG, mas não ao ILS. Na prática, o plano atual subestima o ciclo em 29 dias no caso de referência. A programação proposta reduz o ciclo estimado em 5 dias. Além disso, a nova programação permite saber quantas equipes são necessárias para cumprir um prazo desejado.
 
-Como limitações, as instâncias são sintéticas e o tempo de execução é curto para mais de mil aparelhos. Como trabalhos futuros, sugerem-se: (i) vizinhanças focadas no último dia do ciclo, que é o que define o $C_{\max}$; (ii) incluir a periodicidade das tarefas do PMOC; e (iii) integrar o método ao módulo de cronograma do sistema.
+Como limitações, as instâncias são sintéticas e o tempo de execução é curto para mais de mil aparelhos. Como trabalhos futuros: (i) vizinhanças focadas no último dia do ciclo; (ii) incluir a periodicidade das tarefas do PMOC; e (iii) integrar o método ao módulo de cronograma do sistema.

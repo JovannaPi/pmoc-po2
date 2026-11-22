@@ -27,7 +27,7 @@ def main():
     ex["melhoria"] = 100 * (ex.instancia.map(neh) - ex.cmax) / ex.instancia.map(neh)
 
     # ---- boxplot da melhoria sobre a LPT+NEH (18 instâncias x 30 execuções)
-    fig, ax = plt.subplots(figsize=(3.0, 2.0))
+    fig, ax = plt.subplots(figsize=(3.0, 1.8))
     dados = [ex[ex.algoritmo == a].melhoria.values for a in ALGS]
     bp = ax.boxplot(dados, widths=0.55, patch_artist=True, showfliers=True,
                     medianprops=dict(color="black", lw=1.2),
@@ -47,7 +47,7 @@ def main():
     # ---- convergência por iteração no Caso-base (mediana e IQR das 30 execuções)
     cv = pd.read_csv(os.path.join(R, "convergencia.csv"))
     cv = cv[(cv.instancia == "Caso-base") & cv.iteracao.notna()]
-    fig, ax = plt.subplots(figsize=(4.4, 2.0))
+    fig, ax = plt.subplots(figsize=(4.4, 1.8))
     for a in ALGS:
         c = cv[cv.algoritmo == a]
         itmax = int(c.iteracao.max())
