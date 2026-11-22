@@ -46,7 +46,7 @@ def main():
     ax.step(x, acumulado(d_plan, D), where="post", color=CINZA, linewidth=2, linestyle="--",
             label=f"Plano do sistema ({d_plan.max() + 1} dias)")
     ax.step(x, acumulado(d_ra, D), where="post", color="#0b0b0b", linewidth=2,
-            label=f"Regra atual, execução real ({c_ra[3]} dias)")
+            label=f"Regra atual, execução estimada ({c_ra[3]} dias)")
     ax.step(x, acumulado(d_mh, D), where="post", color=COR[a.algoritmo], linewidth=2,
             label=f"Melhor solução, {a.algoritmo} ({c_mh[3]} dias)")
     ax.axhline(inst.n, color="#c3c2b7", linewidth=0.8)

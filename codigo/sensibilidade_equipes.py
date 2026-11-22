@@ -72,7 +72,7 @@ def main():
 
     fig, ax = plt.subplots(figsize=(4.6, 2.8))
     ax.plot(tab.equipes, tab.plano_sistema, "--o", color=CINZA, linewidth=2, label="Plano do sistema")
-    ax.plot(tab.equipes, tab.regra_atual, "-o", color="#0b0b0b", linewidth=2, label="Regra atual (execução real)")
+    ax.plot(tab.equipes, tab.regra_atual, "-o", color="#0b0b0b", linewidth=2, label="Regra atual (execução estimada)")
     ax.plot(tab.equipes, tab.melhor_dias, "-o", color=COR[alg], linewidth=2, label=f"{alg}")
     ax.set_xlabel("Número de equipes")
     ax.set_ylabel("Dias do ciclo")
