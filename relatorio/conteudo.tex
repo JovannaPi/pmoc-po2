@@ -59,7 +59,7 @@ As restrições \eqref{eq:atrib}--\eqref{eq:inicio} formam uma sequência por eq
     \end{tabular}
 \end{table}
 
-\textbf{Iterações.} A \autoref{fig:conv} explica a diferença. Em média, cada execução fez cerca de 330 iterações do IG, 970 do VNS, 940 do ILS e 5300 gerações do AG. O $C_{\max}$ depende apenas do último dia do ciclo, então a maior parte dos movimentos não o altera e a busca anda sobre platôs. Remover e reinserir 2 de mais de mil aparelhos (IG), ou cruzar e mutar permutações (AG), raramente mexe nesse último dia. Já a busca local do VNS testa muitas trocas e inserções por iteração e encontra as poucas que encurtam o fim do ciclo.
+\textbf{Iterações.} A \autoref{fig:conv} explica a diferença. Em média, cada execução realizou cerca de 330 iterações do IG, 970 iterações do VNS, 940 iterações do ILS e 5300 gerações do AG. O $C_{\max}$ depende apenas do último dia do ciclo, então a maior parte dos movimentos não altera o $C_{\max}$ e a busca percorre platôs. No IG, remover e reinserir 2 de mais de mil aparelhos, ou, no AG, cruzar e mutar permutações raramente muda o último dia do ciclo. Já a busca local do VNS testa muitas trocas e inserções em cada iteração e encontra as poucas que encurtam o fim do ciclo.
 
 \begin{figure}[!htbp]
     \centering
@@ -67,7 +67,7 @@ As restrições \eqref{eq:atrib}--\eqref{eq:inicio} formam uma sequência por eq
     \includegraphics[width=0.95\textwidth]{figuras/convergencia_iteracoes.pdf}
 \end{figure}
 
-\textbf{Impacto prático.} Na Caso-base, o sistema promete 45 dias, mas a regra atual leva 74 quando se consideram os tempos do estudo de campo e os deslocamentos. Os métodos propostos fecham o ciclo no 69.º dia em todas as execuções, 5 dias a menos; as soluções diferem dentro desse último dia (28\,925 min na LPT+NEH, 28\,893 em média no VNS). O deslocamento cai cerca de 7,7\%. O limite inferior é de 58,5 dias. Como as instâncias são sintéticas, esses números estimam o caso real, sem substituí-lo. Considerando todas as instâncias de teste, o VNS reduz o $C_{\max}$ da regra atual em 6,8\%, cerca de 8 dias por ciclo. A \autoref{fig:impacto}b mostra ainda que nem com 9 equipes o ciclo cabe nos 45 dias do plano (seriam 56): o número de dias do sistema é otimista por construção, e um planejamento confiável precisa do tempo de cada aparelho.
+\textbf{Impacto prático.} Na Caso-base, o sistema promete 45 dias, mas a regra atual leva 74 quando se consideram os tempos do estudo de campo e os deslocamentos. Os métodos propostos fecham o ciclo no 69.º dia em todas as execuções, 5 dias a menos; as soluções diferem dentro desse último dia (28\,925 min na LPT+NEH, 28\,893 em média no VNS). O deslocamento cai cerca de 7,7\%. Como as instâncias são sintéticas, esses números estimam o caso real, sem substituí-lo. Considerando todas as instâncias de teste, o VNS reduz o $C_{\max}$ da regra atual em 6,8\%, cerca de 8 dias por ciclo. A \autoref{fig:impacto}b mostra ainda que nem com 9 equipes o ciclo cabe nos 45 dias do plano (seriam 56): o número de dias do sistema é otimista por construção, e um planejamento confiável precisa do tempo de cada aparelho.
 
 \begin{figure}[!htbp]
     \centering
