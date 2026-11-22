@@ -22,6 +22,7 @@ ETAPAS = [
     "escolher_parametros.py",
     "experimento.py",          # retoma execuções pendentes
     "analise.py",
+    "figura_boxplot.py",       # boxplot da melhoria sobre a LPT+NEH e convergência no Caso-base
     "curva_conclusao.py",
     "sensibilidade_equipes.py",  # 5 a 9 equipes na Caso-base
     "figuras_extras.py",         # esquema, exemplo do decodificador, tempo do MILP

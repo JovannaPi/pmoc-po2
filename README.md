@@ -67,6 +67,7 @@ git push
 | 5. Escolha dos parâmetros | `escolher_parametros.py` | `resultados/parametros_finais.json`, `figuras/calibracao_boxplot.*` |
 | 6. Experimento final (30 execuções) | `experimento.py` | `resultados/experimento_execucoes.csv`, `convergencia.csv`, `deterministicos.csv` |
 | 7. Análise estatística | `analise.py` | `resultados/analise_estatistica.txt` (Shapiro-Wilk, Kruskal-Wallis + Dunn, Friedman + Nemenyi), boxplot, Q-Q plot, convergência por tempo e por iteração, RPD por tamanho, histórico do Optuna |
+| 7b. Boxplot da melhoria | `figura_boxplot.py` | `figuras/boxplot_melhoria.*`, `figuras/convergencia_caso.*` |
 | 8. Estudo de caso | `curva_conclusao.py` | `figuras/curva_conclusao_caso.*`, `figuras/gantt_caso_dias1e2.*` |
 | 9. Sensibilidade | `sensibilidade_equipes.py` | dias do ciclo com 5 a 9 equipes (`figuras/sensibilidade_equipes.*`) |
 | 10. Figuras de apoio | `figuras_extras.py` | esquema do problema, exemplo do decodificador, tempo do MILP |

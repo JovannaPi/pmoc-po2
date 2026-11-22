@@ -28,15 +28,15 @@ As restrições \eqref{eq:atrib}--\eqref{eq:inicio} formam uma sequência por eq
 
 \textbf{Calibração.} Seguiu-se a metodologia da disciplina: 30\% das instâncias (7 de 24), todas as combinações de uma grade por algoritmo, 5 execuções cada e escolha pelo menor desvio médio em relação à melhor solução da instância. As grades foram: IG $d\in\{2,4,6\}\times\tau\in\{0{,}1;0{,}4;0{,}8\}$; VNS $k_{\max}\in\{3,5\}\times L\in\{0{,}5n;n;2n\}$; ILS int $\in\{1;2{,}5;5\}\%\times L\in\{0{,}5n;n;2n\}$; AG $P\in\{20,50,100\}\times p_m\in\{0{,}05;0{,}2\}$. Em seguida, o Optuna \cite{akiba2019optuna} (TPE, 12 tentativas, 2 execuções por instância) explorou intervalos mais amplos, e ficou a melhor configuração entre as duas etapas.
 
-\textbf{Configuração experimental.} Como os dados do sistema são internos, foram geradas 25 instâncias sintéticas com a estrutura real: os cinco prédios com 35/15/20/15/15\% dos aparelhos; tipos \textit{hi-wall} (60\%), piso-teto (25\%) e cassete (15\%); tempos do estudo de campo com variação de $\pm10$ min conforme o acesso; e vagas diárias 30\% acima da distribuição uniforme, como no sistema. O Caso-base ($n=1050$, $m=7$) representa o caso real. As demais combinam $n\in\{1000,1250,1500,2000\}$ e $m\in\{5,7\}$, com 3 réplicas. Na calibração, cada execução teve $0{,}006n$ s de CPU. Como as curvas de convergência ainda caíam ao fim desse tempo, o experimento final usou $0{,}02n$ s (20 a 40 s), igual para os quatro métodos. Nas 18 instâncias de teste, cada meta-heurística foi executada 30 vezes; a busca local inicial do VNS e do ILS (até 4\% do tempo) não é contada. Para validar o método, o modelo \eqref{eq:atrib}--\eqref{eq:cmax} foi resolvido com o CBC (limite de 600 s) em 16 instâncias pequenas ($n\in\{6,8,10,12\}$, $m\in\{1,2\}$), e cada meta-heurística foi executada 10 vezes por 1 s em cada uma. O código (Python 3.12 e Numba) e os dados acompanham este relatório.
+\textbf{Configuração experimental.} Como os dados do sistema são internos, foram geradas 25 instâncias sintéticas com a estrutura real: os cinco prédios com 35/15/20/15/15\% dos aparelhos; tipos \textit{hi-wall} (60\%), piso-teto (25\%) e cassete (15\%); tempos do estudo de campo com variação de $\pm10$ min conforme o acesso; e vagas diárias 30\% acima da distribuição uniforme, como no sistema. O Caso-base ($n=1050$, $m=7$) representa o caso real. As demais combinam $n\in\{1000,1250,1500,2000\}$ e $m\in\{5,7\}$, com 3 réplicas. A calibração usou $0{,}006n$ s por execução; como as curvas de convergência ainda caíam, o experimento final usou $0{,}02n$ s (20 a 40 s) para todos os métodos. Nas 18 instâncias de teste, cada meta-heurística foi executada 30 vezes; a busca local inicial do VNS e do ILS (até 4\% do tempo) não é contada. Para validar o método, o modelo \eqref{eq:atrib}--\eqref{eq:cmax} foi resolvido com o CBC (limite de 600 s) em 16 instâncias pequenas ($n\in\{6,8,10,12\}$, $m\in\{1,2\}$), e cada meta-heurística foi executada 10 vezes por 1 s em cada uma. O código (Python 3.12 e Numba) e os dados acompanham este relatório.
 
 \section{Análise e discussão dos resultados}
 
-\textbf{Validação exata.} O CBC provou a otimalidade em 15 das 16 instâncias pequenas. O tempo médio passou de 0,14 s com $n=6$ para 17,4 s com $n=10$ e 283 s com $n=12$, e em uma instância com $n=12$ o limite de 600 s terminou sem prova de otimalidade (melhor solução 1006 min, limite inferior 964). Esse crescimento explosivo inviabiliza o modelo exato na escala real. Nas 15 instâncias resolvidas, as quatro meta-heurísticas atingiram o ótimo em todas as 600 execuções, e na instância em aberto encontraram 1001 min, abaixo da melhor solução do CBC. Logo, o decodificador não exclui as soluções ótimas.
+\textbf{Validação exata.} O CBC provou a otimalidade em 15 das 16 instâncias pequenas. O tempo médio passou de 0,14 s com $n=6$ para 17,4 s com $n=10$ e 283 s com $n=12$, e em uma instância com $n=12$ o limite de 600 s terminou sem prova de otimalidade (melhor solução 1006 min, limite inferior 964). Nas 15 instâncias resolvidas, as quatro meta-heurísticas atingiram o ótimo em todas as 600 execuções, e na instância em aberto encontraram 1001 min, abaixo da melhor solução do CBC. Logo, o decodificador não exclui as soluções ótimas.
 
 \textbf{Calibração.} O Optuna melhorou o VNS ($k_{\max}=5$, $L=0{,}32n$; desvio de 0,59\% para 0,21\%) e o ILS (int $=9{,}3\%$, $L=0{,}32n$; de 0,80\% para 0,72\%). Para o AG ($P=50$, $p_m=0{,}2$) e o IG ($d=2$, $\tau=0{,}1$), a grade foi melhor ou igual. No IG, todas as combinações deram o mesmo desvio: o método não saiu da solução inicial, o que antecipava o resultado do experimento.
 
-\textbf{Comparação.} A \autoref{tab:rpd} mostra o RPD em relação à melhor solução conhecida de cada instância. A regra atual fica, em média, 7,7\% acima dela. A LPT+NEH já reduz essa distância para 0,50\%, e o VNS é o único método que melhora a construtiva de forma consistente (0,37\%). O IG e o AG terminaram, em todas as execuções, com a própria solução LPT+NEH. Os RPDs não são normais (Shapiro-Wilk, $p<10^{-15}$), então seguiu-se o caminho não paramétrico \cite{derrac2011practical}. O teste de Kruskal-Wallis aponta diferença ($H=29{,}1$; $p=2{,}2\times10^{-6}$), e o pós-teste de Dunn (Bonferroni) separa o VNS dos demais ($p<10^{-4}$ contra IG e AG; $p=0{,}005$ contra o ILS). Como as 30 execuções de uma instância não são independentes, aplicou-se também o teste de Friedman, com as instâncias como blocos \cite{demsar2006statistical}: $Q=30{,}0$, $p=1{,}4\times10^{-6}$, com postos médios VNS 1,56, ILS 2,28, IG 3,08 e AG 3,08. Pelo pós-teste de Nemenyi, o VNS é melhor que o IG e o AG ($p=0{,}002$), e a diferença para o ILS não é significativa ($p=0{,}34$).
+\textbf{Comparação.} A \autoref{tab:rpd} mostra o RPD em relação à melhor solução conhecida de cada instância. A regra atual fica, em média, 7,7\% acima dela. A LPT+NEH já reduz essa distância para 0,50\%, e o VNS é o único método que melhora a construtiva de forma consistente (0,37\%). O IG e o AG terminaram, em todas as execuções, com a própria solução LPT+NEH (\autoref{fig:conv}a). Os RPDs não são normais (Shapiro-Wilk, $p<10^{-15}$), então seguiu-se o caminho não paramétrico \cite{derrac2011practical}. Os testes de Kruskal-Wallis ($p=2{,}2\times10^{-6}$) e de Dunn (Bonferroni) separam o VNS dos demais ($p\le0{,}005$). Como as 30 execuções de uma instância não são independentes, aplicou-se também o teste de Friedman, com as instâncias como blocos \cite{demsar2006statistical}: $Q=30{,}0$, $p=1{,}4\times10^{-6}$, com postos médios VNS 1,56, ILS 2,28, IG 3,08 e AG 3,08. Pelo pós-teste de Nemenyi, o VNS é melhor que o IG e o AG ($p=0{,}002$), e a diferença para o ILS não é significativa ($p=0{,}34$).
 
 \begin{table}[htb]
     \centering
@@ -59,26 +59,36 @@ As restrições \eqref{eq:atrib}--\eqref{eq:inicio} formam uma sequência por eq
     \end{tabular}
 \end{table}
 
-\textbf{Iterações.} A \autoref{fig:conv} explica a diferença. Em média, cada execução realizou cerca de 330 iterações do IG, 970 iterações do VNS, 940 iterações do ILS e 5300 gerações do AG. O $C_{\max}$ depende apenas do último dia do ciclo, então a maior parte dos movimentos não altera o $C_{\max}$ e a busca percorre platôs. No IG, remover e reinserir 2 de mais de mil aparelhos, ou, no AG, cruzar e mutar permutações raramente muda o último dia do ciclo. Já a busca local do VNS testa muitas trocas e inserções em cada iteração e encontra as poucas que encurtam o fim do ciclo.
+\textbf{Iterações.} A \autoref{fig:conv}b explica a diferença. Em média, cada execução realizou cerca de 330 iterações do IG, 970 iterações do VNS, 940 iterações do ILS e 5300 gerações do AG. O $C_{\max}$ depende apenas do último dia do ciclo, então a maior parte dos movimentos não altera o $C_{\max}$ e a busca percorre platôs. No IG, remover e reinserir 2 de mais de mil aparelhos, ou, no AG, cruzar e mutar permutações raramente muda o último dia do ciclo. Já a busca local do VNS testa muitas trocas e inserções em cada iteração e encontra as poucas que encurtam o fim do ciclo.
 
 \begin{figure}[!htbp]
     \centering
-    \caption{\label{fig:conv} Convergência no Caso-base: mediana (linha) e intervalo interquartil (faixa) do melhor $C_{\max}$ das 30 execuções, por iteração.}
-    \includegraphics[width=0.88\textwidth]{figuras/convergencia_iteracoes.pdf}
+    \caption{\label{fig:conv} (a) Melhoria de cada execução sobre a LPT+NEH (losango: média); (b) convergência no Caso-base por iteração (mediana e intervalo interquartil).}
+    \begin{subfigure}[b]{0.38\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{figuras/boxplot_melhoria.pdf}
+        \caption{Boxplot da melhoria}
+    \end{subfigure}
+    \hfill
+    \begin{subfigure}[b]{0.58\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{figuras/convergencia_caso.pdf}
+        \caption{Convergência por iteração}
+    \end{subfigure}
 \end{figure}
 
 \textbf{Impacto prático.} No Caso-base, o sistema promete 45 dias, mas a regra atual leva 74 quando se somam os tempos do estudo de campo e os deslocamentos. Os métodos propostos fecham o ciclo no 69.º dia em todas as execuções, ou seja, 5 dias a menos. As soluções diferem dentro desse último dia (28\,925 min na LPT+NEH, 28\,893 em média no VNS). O deslocamento cai cerca de 7,7\%. O limite inferior é de 58,5 dias. Como as instâncias são sintéticas, esses números estimam o caso real, sem substituí-lo. Considerando todas as instâncias de teste, o VNS reduz o $C_{\max}$ da regra atual em 6,8\%, cerca de 8 dias por ciclo. A \autoref{fig:impacto}b mostra ainda que nem com 9 equipes o ciclo cabe nos 45 dias do plano (seriam 56). O número de dias do sistema é otimista por construção, e um planejamento confiável precisa do tempo de cada aparelho.
 
 \begin{figure}[!htbp]
     \centering
-    \caption{\label{fig:impacto} Caso-base: (a) aparelhos concluídos por dia; (b) dias do ciclo conforme o número de equipes.}
-    \begin{subfigure}[b]{0.52\textwidth}
+    \caption{\label{fig:impacto} Caso-base: (a) aparelhos concluídos por dia; (b) dias do ciclo por número de equipes.}
+    \begin{subfigure}[b]{0.47\textwidth}
         \centering
         \includegraphics[width=\textwidth]{figuras/curva_conclusao_caso.pdf}
         \caption{Plano, regra atual e melhor solução}
     \end{subfigure}
     \hfill
-    \begin{subfigure}[b]{0.46\textwidth}
+    \begin{subfigure}[b]{0.42\textwidth}
         \centering
         \includegraphics[width=\textwidth]{figuras/sensibilidade_equipes.pdf}
         \caption{Sensibilidade (VNS)}
