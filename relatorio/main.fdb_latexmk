@@ -1,17 +1,17 @@
 # Fdb version 4
-["bibtex main"] 1795396399.69801 "main.aux" "main.bbl" "main" 1795396400.64478 0
-  "./referencias.bib" 1795172935.17057 3404 4701a61b55b917a78084e0d599f87291 ""
+["bibtex main"] 1795396503.80172 "main.aux" "main.bbl" "main" 1795396504.85613 0
+  "./referencias.bib" 1795396503.62723 3404 8554f73c60ad9e96af148d33c8c35fa8 ""
   "/usr/share/texlive/texmf-dist/bibtex/bib/abntex2/abntex2-options.bib" 1357081713 5396 4eb260dac60f150ae608d45252853090 ""
   "/usr/share/texlive/texmf-dist/bibtex/bst/abntex2/abntex2-num.bst" 1543183680 60065 0bf58df5e47e1a6c21c910ec88a893f4 ""
-  "capa.aux" 1795396400.28263 1958 2efe96e7fdf887e1d80bb205dcfa260b "pdflatex"
-  "conteudo.aux" 1795396400.37863 4669 4b94ef438666f006dcf03e0693a41aa1 "pdflatex"
-  "main.aux" 1795396400.39063 4748 46a2391d403640c085bd04d3cba32701 "pdflatex"
-  "resumos.aux" 1795396400.29463 1961 50c7bf85703d2fedf8c9a9256dd96e70 "pdflatex"
+  "capa.aux" 1795396504.45677 1958 2efe96e7fdf887e1d80bb205dcfa260b "pdflatex"
+  "conteudo.aux" 1795396504.56077 4669 4b94ef438666f006dcf03e0693a41aa1 "pdflatex"
+  "main.aux" 1795396504.57277 4748 46a2391d403640c085bd04d3cba32701 "pdflatex"
+  "resumos.aux" 1795396504.46877 1961 50c7bf85703d2fedf8c9a9256dd96e70 "pdflatex"
   (generated)
   "main.bbl"
   "main.blg"
   (rewritten before read)
-["pdflatex"] 1795396399.76231 "main.tex" "main.pdf" "main" 1795396400.64505 0
+["pdflatex"] 1795396503.89447 "main.tex" "main.pdf" "main" 1795396504.85655 0
   "/etc/texmf/web2c/texmf.cnf" 1793946000 475 c0e671620eb5563b2130f56340a5fde8 ""
   "/usr/share/texlive/texmf-dist/fonts/enc/dvips/newtx/ntx-ec-tlf-pc.enc" 1698694482 3136 bbe665bd0bb471a2da1e8fd326cff9fa ""
   "/usr/share/texlive/texmf-dist/fonts/enc/dvips/newtx/ntx-ec-tlf.enc" 1698694482 2914 fdbc4a54b9bc76f4551b5303f2737d33 ""
@@ -184,20 +184,20 @@
   "/usr/share/texmf/web2c/texmf.cnf" 1707919699 40399 f2c302f7d2af602abb742093540a5834 ""
   "/var/lib/texmf/fonts/map/pdftex/updmap/pdftex.map" 1794931920.52963 5151784 add8b08817a5b9ed26e9acf75c6581c3 ""
   "/var/lib/texmf/web2c/pdftex/pdflatex.fmt" 1794925622 6783053 45296f4b35fdb828b6feace717161031 ""
-  "capa.aux" 1795396400.28263 1958 2efe96e7fdf887e1d80bb205dcfa260b "pdflatex"
+  "capa.aux" 1795396504.45677 1958 2efe96e7fdf887e1d80bb205dcfa260b "pdflatex"
   "capa.tex" 1795265847.48813 580 7351eda391139f8ec872b026dd799125 ""
-  "conteudo.aux" 1795396400.37863 4669 4b94ef438666f006dcf03e0693a41aa1 "pdflatex"
+  "conteudo.aux" 1795396504.56077 4669 4b94ef438666f006dcf03e0693a41aa1 "pdflatex"
   "conteudo.tex" 1795396397.35272 15351 1ebd48b08845c10d8b7ebd3c21f3e3ad ""
   "figuras/boxplot_melhoria.pdf" 1795391191.55958 13993 0748ec429f6ca3306e3bc32369a6a914 ""
   "figuras/convergencia_caso.pdf" 1795391191.56035 20741 65975953ba33b7ac5fa3ef8436164d88 ""
   "figuras/curva_conclusao_caso.pdf" 1795390978.6626 19931 ea8d65cdece7f7c2383e9fe8940dc3b3 ""
   "figuras/gantt_dia1.pdf" 1795396386.14289 15134 306f1dec92972a217a5fedf970283df7 ""
   "figuras/sensibilidade_equipes.pdf" 1795390978.66291 18031 5f2e18547be698901caa10406983a13b ""
-  "main.aux" 1795396400.39063 4748 46a2391d403640c085bd04d3cba32701 "pdflatex"
-  "main.bbl" 1795396399.75463 3476 998a2c5b17cefb66e830639846b1377a "bibtex main"
+  "main.aux" 1795396504.57277 4748 46a2391d403640c085bd04d3cba32701 "pdflatex"
+  "main.bbl" 1795396503.87277 3476 0b2dfe183c98aa506f460e66c71591bc "bibtex main"
   "main.tex" 1795172926.37057 3658 4b77ccc097de3d2af70f3dd1526f1f49 ""
-  "main.toc" 1795396400.39463 687 99c95f87d2de7113560bed3514a6dc7c "pdflatex"
-  "resumos.aux" 1795396400.29463 1961 50c7bf85703d2fedf8c9a9256dd96e70 "pdflatex"
+  "main.toc" 1795396504.57677 687 99c95f87d2de7113560bed3514a6dc7c "pdflatex"
+  "resumos.aux" 1795396504.46877 1961 50c7bf85703d2fedf8c9a9256dd96e70 "pdflatex"
   "resumos.tex" 1795386231.23087 2493 eaf18d30f98cbd5a09abc2ec9d8f2401 ""
   (generated)
   "capa.aux"
