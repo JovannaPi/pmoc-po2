@@ -23,6 +23,7 @@ ETAPAS = [
     "experimento.py",          # retoma execuções pendentes
     "analise.py",
     "figura_boxplot.py",       # boxplot da melhoria sobre a LPT+NEH e convergência no Caso-base
+    "figura_gantt_dia1.py",    # agenda do 1.º dia do Caso-base (melhor solução do VNS)
     "curva_conclusao.py",
     "sensibilidade_equipes.py",  # 5 a 9 equipes na Caso-base
     "figuras_extras.py",         # esquema, exemplo do decodificador, tempo do MILP

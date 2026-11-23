@@ -77,21 +77,27 @@ As restrições \eqref{eq:atrib}--\eqref{eq:inicio} formam uma sequência por eq
     \end{subfigure}
 \end{figure}
 
-\textbf{Impacto prático.} No Caso-base, o sistema promete 45 dias, mas a regra atual leva 74 quando se somam os tempos do estudo de campo e os deslocamentos. Os métodos propostos fecham o ciclo no 69.º dia em todas as execuções, ou seja, 5 dias a menos. As soluções diferem dentro desse último dia (28\,925 min na LPT+NEH, 28\,893 em média no VNS). O deslocamento cai cerca de 7,7\%. O limite inferior é de 58,5 dias. Como as instâncias são sintéticas, esses números estimam o caso real, sem substituí-lo. Considerando todas as instâncias de teste, o VNS reduz o $C_{\max}$ da regra atual em 6,8\%, cerca de 8 dias por ciclo. A \autoref{fig:impacto}b mostra ainda que nem com 9 equipes o ciclo cabe nos 45 dias do plano (seriam 56). O número de dias do sistema é otimista por construção, e um planejamento confiável precisa do tempo de cada aparelho.
+\textbf{Impacto prático.} No Caso-base, o sistema promete 45 dias, mas a regra atual leva 74 quando se somam os tempos do estudo de campo e os deslocamentos. Os métodos propostos fecham o ciclo no 69.º dia em todas as execuções, ou seja, 5 dias a menos. As soluções diferem dentro desse último dia (28\,925 min na LPT+NEH, 28\,893 em média no VNS). O deslocamento cai cerca de 7,7\%. O limite inferior é de 58,5 dias. Como as instâncias são sintéticas, esses números estimam o caso real, sem substituí-lo. Considerando todas as instâncias de teste, o VNS reduz o $C_{\max}$ da regra atual em 6,8\%, cerca de 8 dias por ciclo. A \autoref{fig:impacto}b mostra ainda que nem com 9 equipes o ciclo cabe nos 45 dias do plano (seriam 56). Na agenda gerada (\autoref{fig:impacto}c), cada equipe atende 2 ou 3 aparelhos no 1.º dia, com pouco deslocamento. O número de dias do sistema é otimista por construção, e um planejamento confiável precisa do tempo de cada aparelho.
 
 \begin{figure}[!htbp]
     \centering
-    \caption{\label{fig:impacto} Caso-base: (a) aparelhos concluídos por dia; (b) dias do ciclo por número de equipes.}
-    \begin{subfigure}[b]{0.44\textwidth}
+    \caption{\label{fig:impacto} Caso-base: (a) aparelhos concluídos por dia; (b) dias do ciclo por número de equipes; (c) agenda do 1.º dia na melhor solução do VNS.}
+    \begin{subfigure}[b]{0.33\textwidth}
         \centering
         \includegraphics[width=\textwidth]{figuras/curva_conclusao_caso.pdf}
-        \caption{Plano, regra atual e melhor solução}
+        \caption{Conclusão por dia}
     \end{subfigure}
     \hfill
-    \begin{subfigure}[b]{0.40\textwidth}
+    \begin{subfigure}[b]{0.29\textwidth}
         \centering
         \includegraphics[width=\textwidth]{figuras/sensibilidade_equipes.pdf}
         \caption{Sensibilidade (VNS)}
+    \end{subfigure}
+    \hfill
+    \begin{subfigure}[b]{0.27\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{figuras/gantt_dia1.pdf}
+        \caption{Agenda do 1.º dia}
     \end{subfigure}
 \end{figure}
 
